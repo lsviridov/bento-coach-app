@@ -10,9 +10,11 @@ import { InstallPrompt, PageLayout } from '@/shared';
 import { ActionFab } from '@/widgets/coach-entry';
 import { fetchDailySummary } from '@/shared/api/mock-api';
 import type { DailySummaryData } from '@/shared/api/mock-api';
+import React from 'react'; // Added missing import for React
 
 const Index = () => {
   const [dailyData, setDailyData] = useState<DailySummaryData>();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     // Load daily summary data
@@ -28,6 +30,26 @@ const Index = () => {
     console.log('Opening manual entry form');
     // TODO: Navigate to manual entry screen
   };
+
+  const handleStartOnboarding = () => {
+    setShowOnboarding(true);
+  };
+
+  const handleCloseOnboarding = () => {
+    setShowOnboarding(false);
+  };
+
+  // Show onboarding quiz if requested
+  if (showOnboarding) {
+    // Dynamically import the onboarding quiz to avoid loading it unless needed
+    const OnboardingSleepQuiz = React.lazy(() => import('@/features/onboarding-sleep').then(module => ({ default: module.OnboardingSleepQuiz })));
+    
+    return (
+      <React.Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading quiz...</div>}>
+        <OnboardingSleepQuiz />
+      </React.Suspense>
+    );
+  }
 
   return (
     <PageLayout>
@@ -45,6 +67,22 @@ const Index = () => {
             onPhotoAnalyze={handlePhotoAnalyze}
             onManualAdd={handleManualAdd}
           />
+          
+          {/* Onboarding Quiz Button */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              New to ADAPTO?
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Take our quick sleep & nutrition quiz to get personalized recommendations
+            </p>
+            <button
+              onClick={handleStartOnboarding}
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            >
+              Start Sleep Quiz
+            </button>
+          </div>
           
           {/* Enhanced Home Widgets */}
           <section className="space-y-6">
