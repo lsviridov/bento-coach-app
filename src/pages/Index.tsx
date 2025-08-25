@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { AppHeader, DailySummary } from '@/widgets';
 import { CoachTip } from '@/widgets/coach-tip';
 import { WeekStrip } from '@/widgets/week-strip';
@@ -10,7 +10,9 @@ import { InstallPrompt, PageLayout } from '@/shared';
 import { ActionFab } from '@/widgets/coach-entry';
 import { fetchDailySummary } from '@/shared/api/mock-api';
 import type { DailySummaryData } from '@/shared/api/mock-api';
-import React from 'react'; // Added missing import for React
+
+// Lazy load the onboarding quiz component
+const OnboardingSleepQuiz = lazy(() => import('@/features/onboarding-sleep').then(module => ({ default: module.OnboardingSleepQuiz })));
 
 const Index = () => {
   const [dailyData, setDailyData] = useState<DailySummaryData>();
@@ -41,13 +43,10 @@ const Index = () => {
 
   // Show onboarding quiz if requested
   if (showOnboarding) {
-    // Dynamically import the onboarding quiz to avoid loading it unless needed
-    const OnboardingSleepQuiz = React.lazy(() => import('@/features/onboarding-sleep').then(module => ({ default: module.OnboardingSleepQuiz })));
-    
     return (
-      <React.Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading quiz...</div>}>
+      <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">Загрузка квиза...</div>}>
         <OnboardingSleepQuiz />
-      </React.Suspense>
+      </Suspense>
     );
   }
 
@@ -70,17 +69,10 @@ const Index = () => {
           
           {/* Onboarding Quiz Button */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              New to ADAPTO?
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Take our quick sleep & nutrition quiz to get personalized recommendations
-            </p>
-            <button
-              onClick={handleStartOnboarding}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
-            >
-              Start Sleep Quiz
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Новичок в ADAPTO?</h3>
+            <p className="text-gray-600 mb-4">Пройдите наш быстрый квиз о сне и питании для получения персональных рекомендаций</p>
+            <button onClick={handleStartOnboarding} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300">
+              Начать квиз о сне
             </button>
           </div>
           

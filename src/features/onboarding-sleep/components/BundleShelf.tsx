@@ -18,39 +18,39 @@ interface BundleShelfProps {
 // Mock bundle data - in a real app this would come from an API
 const mockBundles: Bundle[] = [
   {
-    id: 'b1',
-    title: 'Evening Light Bundle',
-    description: 'Gentle evening meals and snacks for better sleep',
-    tags: ['evening-light', 'sugar-stable'],
-    price: '$29.99'
+    id: 'bundle-1',
+    title: 'Вечерний набор для спокойного сна',
+    description: 'Травяные чаи, магний и мелатонин для улучшения качества сна',
+    price: '₽2,500',
+    tags: ['evening-light', 'calm-evening', 'magnesium-rich']
   },
   {
-    id: 'b2',
-    title: 'Caffeine-Free Rituals',
-    description: 'Herbal teas and evening routines to replace stimulants',
-    tags: ['caffeine-free', 'evening-ritual'],
-    price: '$24.99'
+    id: 'bundle-2',
+    title: 'Набор без кофеина',
+    description: 'Альтернативы кофе и энергетикам для вечернего времени',
+    price: '₽1,800',
+    tags: ['caffeine-free', 'evening-ritual']
   },
   {
-    id: 'b3',
-    title: 'Low-Reflux Dinner',
-    description: 'Gentle foods and supplements for digestive comfort',
-    tags: ['low-reflux', 'gentle-gut'],
-    price: '$34.99'
+    id: 'bundle-3',
+    title: 'Набор для стабильного сахара',
+    description: 'Продукты и добавки для поддержания стабильного уровня глюкозы',
+    price: '₽3,200',
+    tags: ['sugar-stable', 'whole-grains']
   },
   {
-    id: 'b4',
-    title: 'Sugar-Stable Evenings',
-    description: 'Whole grains and protein-rich evening options',
-    tags: ['sugar-stable', 'whole-grains'],
-    price: '$27.99'
+    id: 'bundle-4',
+    title: 'Набор для здорового пищеварения',
+    description: 'Пробиотики и ферменты для комфортного сна',
+    price: '₽2,800',
+    tags: ['low-reflux', 'gentle-gut']
   },
   {
-    id: 'b5',
-    title: 'Magnesium-Rich Calm',
-    description: 'Foods and supplements for relaxation and sleep',
-    tags: ['magnesium-rich', 'calm-evening'],
-    price: '$31.99'
+    id: 'bundle-5',
+    title: 'Набор микронутриентов',
+    description: 'Витамины и минералы для качественного восстановления',
+    price: '₽4,500',
+    tags: ['magnesium-rich', 'calm-evening']
   }
 ];
 
@@ -78,13 +78,13 @@ export const BundleShelf: React.FC<BundleShelfProps> = ({ bundleTags, onClose })
         <div className="sticky top-0 bg-white border-b border-gray-200 p-6 rounded-t-2xl">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Recommended Bundles</h2>
-              <p className="text-gray-600">Based on your sleep profile</p>
+              <h2 className="text-2xl font-bold text-gray-900">Рекомендуемые наборы</h2>
+              <p className="text-gray-600">На основе вашего профиля сна</p>
             </div>
             <button
               onClick={onClose}
               className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
-              aria-label="Close bundle shelf"
+              aria-label="Закрыть полку наборов"
             >
               <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -134,7 +134,7 @@ export const BundleShelf: React.FC<BundleShelfProps> = ({ bundleTags, onClose })
                             : 'bg-blue-600 text-white hover:bg-blue-700'
                         }`}
                       >
-                        {savedBundles.has(bundle.id) ? 'Saved!' : 'Save'}
+                        {savedBundles.has(bundle.id) ? 'Сохранено!' : 'Сохранить'}
                       </button>
                     </div>
                   </div>
@@ -148,9 +148,9 @@ export const BundleShelf: React.FC<BundleShelfProps> = ({ bundleTags, onClose })
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No bundles found</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Наборы не найдены</h3>
               <p className="text-gray-500">
-                We're working on creating bundles for your profile
+                Мы работаем над созданием наборов для вашего профиля
               </p>
             </div>
           )}
@@ -162,7 +162,7 @@ export const BundleShelf: React.FC<BundleShelfProps> = ({ bundleTags, onClose })
             onClick={onClose}
             className="w-full bg-gray-100 text-gray-700 font-medium py-3 px-6 rounded-xl hover:bg-gray-200 transition-colors"
           >
-            Close
+            Закрыть
           </button>
         </div>
       </div>

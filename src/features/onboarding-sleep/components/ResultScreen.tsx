@@ -48,10 +48,10 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             </svg>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Your Personalized Plan
+            Ваш персональный план
           </h1>
           <p className="text-gray-600">
-            Based on your answers, here's what we recommend
+            На основе ваших ответов вот что мы рекомендуем
           </p>
         </div>
 
@@ -63,13 +63,13 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           
           {/* Why this plan */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Why this plan?</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">Почему этот план?</h3>
             <p className="text-gray-700 leading-relaxed">{plan.why}</p>
           </div>
 
           {/* Tonight's steps */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-3">Tonight's steps:</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-3">Шаги на сегодня:</h3>
             <ul className="space-y-2">
               {plan.tonight.map((step, index) => (
                 <li key={index} className="flex items-start space-x-3">
@@ -84,7 +84,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
 
           {/* 7-day plan preview */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-3">7-day plan preview:</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-3">Предварительный просмотр 7-дневного плана:</h3>
             <div className="bg-gray-50 rounded-xl p-4">
               <ul className="space-y-2 text-sm text-gray-700">
                 {plan.plan7d.slice(0, 3).map((item, index) => (
@@ -95,7 +95,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 ))}
                 {plan.plan7d.length > 3 && (
                   <li className="text-blue-600 font-medium">
-                    +{plan.plan7d.length - 3} more steps...
+                    +{plan.plan7d.length - 3} еще шагов...
                   </li>
                 )}
               </ul>
@@ -110,14 +110,14 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             disabled={isSaving}
             className="w-full bg-blue-600 text-white font-semibold py-4 px-8 rounded-xl text-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSaving ? 'Saving...' : 'Save Plan'}
+            {isSaving ? 'Сохранение...' : 'Сохранить план'}
           </button>
 
           <button
             onClick={onViewBundles}
             className="w-full bg-white text-blue-600 font-semibold py-4 px-8 rounded-xl text-lg border-2 border-blue-600 hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
-            See Bundles
+            Посмотреть наборы
           </button>
 
           <button
@@ -125,14 +125,14 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             disabled={isReminderSet}
             className="w-full bg-gray-100 text-gray-700 font-medium py-3 px-6 rounded-xl hover:bg-gray-200 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isReminderSet ? 'Reminder Set!' : 'Set Daily Reminder'}
+            {isReminderSet ? 'Напоминание установлено!' : 'Установить ежедневное напоминание'}
           </button>
         </div>
 
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-sm text-gray-500">
-            Your plan will be saved and you can access it anytime
+            Ваш план будет сохранен и вы сможете получить к нему доступ в любое время
           </p>
         </div>
       </div>

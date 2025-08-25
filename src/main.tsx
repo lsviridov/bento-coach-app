@@ -1,7 +1,8 @@
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import { installZoomBlocker } from './app/disableZoom'
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
+import { installZoomBlocker } from './app/disableZoom';
 
 // Отключаем зум если включен флаг
 if (import.meta.env.VITE_DISABLE_ZOOM === '1') {

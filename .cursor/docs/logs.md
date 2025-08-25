@@ -1,104 +1,104 @@
-# Development Logs
+# Logs
 
-## 2024-12-19 - Onboarding Sleep Quiz Feature
+## 2025-08-25 - Исправление логики завершения квиза
 
-### Created comprehensive onboarding sleep quiz feature for ADAPTO app
+### Проблема
+Квиз не показывал результат и выводил "Что-то пошло не так" вместо персональных рекомендаций.
 
-**New Feature Structure:**
-- `src/features/onboarding-sleep/` - Complete feature folder
-- `data/` - Types, questions, plans, and scoring logic
-- `components/` - UI components for all quiz screens
-- `store/` - Zustand state management
-- `services/` - Analytics, Supabase, and persistence
-- `__tests__/` - Comprehensive test coverage
+### Решение
+1. **Исправлена логика завершения** - теперь квиз корректно завершается после 5-го вопроса
+2. **Улучшен анализ ответов** - добавлена детальная логика анализа всех 5 вопросов
+3. **Добавлено логирование** - console.log для отладки процесса завершения
+4. **Улучшена отладка** - добавлены debug-блоки в UI для диагностики проблем
 
-**Key Components:**
-- QuizStart - Welcome screen with value proposition
-- QuizQuestion - Interactive question interface with progress
-- ProfileMiniForm - Quick profile collection
-- ResultScreen - Personalized plan display
-- BundleShelf - Product recommendations
+### Логика анализа ответов
+- **Вопрос 1**: Время ужина и его объем → определяет `hasLateDinner` и `hasHeavyDinner`
+- **Вопрос 2**: Вечерние углеводы → определяет `hasEveningCarbs` и `hasSugarSpikes`
+- **Вопрос 3**: Стимуляторы после 14:00 → определяет `hasStimulants`
+- **Вопрос 4**: Алкоголь и гидратация → определяет `hasAlcohol` и `hasDehydration`
+- **Вопрос 5**: Состав ужина → определяет `hasReflux` и `hasHeavyFood`
 
-**Technical Features:**
-- 5-question quiz with exact weight specifications
-- ADAPTO framework scoring (Diet, Activators, Protocols, Timing, Outcomes)
-- 5 result types with personalized 7-day plans
-- Analytics tracking for all user interactions
-- Supabase integration for data persistence
-- Mobile-first, accessible design with Tailwind CSS
-- Comprehensive TypeScript types and validation
+### Алгоритм выбора результата
+1. **R1**: Поздний + тяжелый ужин → "Более ранний и легкий ужин"
+2. **R2**: Стимуляторы + поздний ужин → "Ограничение стимуляторов + время"
+3. **R3**: Вечерние углеводы + скачки сахара → "Контроль углеводов"
+4. **R4**: Алкоголь или обезвоживание → "Гидратация и алкоголь"
+5. **R5**: Рефлюкс или тяжелая пища → "Состав ужина" (по умолчанию)
 
-**Dependencies Added:**
-- zustand for state management
-- @supabase/supabase-js for database operations
+### Файлы изменены
+- `src/features/onboarding-sleep/store/useOnboardingSleepStore.ts` - исправлена логика завершения
+- `src/features/onboarding-sleep/index.tsx` - добавлена отладка и улучшено отображение
 
-**Testing:**
-- All scoring logic tests passing (12/12)
-- Covers edge cases and deterministic result mapping
+---
 
-**Ready for Production:**
-- Feature can be mounted as `<OnboardingSleepQuiz />`
-- Follows FSD architecture principles
-- Includes comprehensive documentation
-- Mobile-optimized with proper accessibility
+## 2025-08-25 - Завершение функциональности onboarding quiz
 
-### Fixed Supabase initialization error
+### Добавлено
+1. **Экран результата** - показывает персональные рекомендации на основе ответов
+2. **Логика завершения** - автоматически завершает квиз после 5-го вопроса
+3. **5 типов результатов** - R1-R5 с разными рекомендациями для сна и питания
+4. **Кнопки действий** - "Вернуться на главную" и "Пройти квиз заново"
+5. **Анализ ответов** - простая логика определения типа рекомендации
 
-**Issue Resolved:**
-- Supabase client was throwing error on import due to missing environment variables
-- Implemented lazy initialization pattern to prevent immediate errors
-- Added graceful fallback to mock mode when Supabase is not configured
+### Результаты квиза
+- **R1**: Более ранний и легкий ужин (поздние тяжелые приемы пищи)
+- **R2**: Ограничение стимуляторов (кофеин/никотин после 14:00)
+- **R3**: Оптимизация времени ужина (поздний ужин)
+- **R4**: Контроль вечерних углеводов (скачки сахара)
+- **R5**: Поддержание текущих привычек (оптимальные привычки)
 
-**Changes Made:**
-- Updated `supabaseClient.ts` with lazy initialization
-- Added `config.ts` for environment variable management
-- Modified main component to handle missing Supabase gracefully
-- Fixed TypeScript interface mismatches in QuizQuestion component
+### Файлы изменены
+- `src/features/onboarding-sleep/store/useOnboardingSleepStore.ts` - добавлена логика завершения
+- `src/features/onboarding-sleep/index.tsx` - добавлен экран результата и навигация
 
-**Current Status:**
-- Feature builds successfully without errors
-- Gracefully handles missing Supabase configuration
-- Falls back to mock mode for development/testing
-- All TypeScript errors resolved
+---
 
-### Integration Example Added
+## 2025-08-25 - Исправление ошибки React hooks в onboarding quiz
 
-**Integration Details:**
-- Added onboarding quiz button to Index page (`src/pages/Index.tsx`)
-- Implemented lazy loading with React.Suspense for optimal performance
-- Quiz button appears in a highlighted section above existing widgets
-- User can start quiz and return to main page after completion
+### Проблема
+Ошибка `TypeError: Cannot read properties of null (reading 'useCallback')` и `Warning: Invalid hook call` в компоненте `OnboardingSleepQuiz`.
 
-**User Experience:**
-- Clear call-to-action for new users
-- Seamless integration with existing app flow
-- Responsive design matching app's visual style
-- Graceful fallback if quiz components fail to load
+### Решение
+1. **Упростил store** - создал простой Zustand store вне компонента с базовыми методами
+2. **Исправил компонент** - использовал `memo` и правильные импорты, убрал сложную логику
+3. **Обновил React** - обновил с React 18.3.1 до React 19.1.1 для совместимости с пакетами
+4. **Добавил dedupe** - добавил `dedupe: ['react', 'react-dom']` в vite.config.ts
+5. **Очистил кеш** - удалил `node_modules/.vite` для чистого запуска
 
-**Technical Implementation:**
-- Dynamic import prevents unnecessary bundle loading
-- State management for showing/hiding quiz
-- Proper error boundaries and loading states
-- Maintains app's existing functionality
+### Результат
+- Компонент успешно собирается
+- Ошибка React hooks устранена
+- Store работает корректно
+- Приложение готово к тестированию
 
-### Git Commit & Push Completed
+### Файлы изменены
+- `src/features/onboarding-sleep/store/useOnboardingSleepStore.ts` - упрощен store
+- `src/features/onboarding-sleep/index.tsx` - исправлен компонент
+- `vite.config.ts` - добавлен dedupe
+- `package.json` - обновлены версии React
+- `pnpm-lock.yaml` - обновлены зависимости
 
-**Commit Details:**
-- Hash: `351ea7a`
-- Message: "feat: implement comprehensive onboarding sleep quiz feature"
-- Files changed: 26 files
-- Insertions: 20,111 lines
-- Deletions: 4,796 lines
+---
 
-**Files Added:**
-- Complete onboarding-sleep feature folder with all components
-- New dependencies in package.json (zustand, @supabase/supabase-js)
-- Updated Index page with quiz integration
-- Comprehensive documentation and tests
+## 2025-08-25 - Исправление проблемы с отсутствующими ответами
 
-**Push Status:**
-- Successfully pushed to `origin/main`
-- Remote: `https://github.com/lsviridov/bento-coach-app.git`
-- All changes now available on GitHub
+### Проблема
+Квиз не завершался, если пользователь не ответил на все 5 вопросов. В debug-информации показывало "Ответов: 4/5" и отсутствовал ответ на `q1`.
+
+### Решение
+1. **Убрана строгая проверка** - квиз теперь завершается независимо от количества ответов
+2. **Добавлена fallback-логика** - для отсутствующих ответов используются значения по умолчанию
+3. **Добавлена кнопка "Завершить квиз"** - пользователь может принудительно завершить квиз
+4. **Улучшен алгоритм анализа** - добавлены дополнительные проверки для частичных ответов
+
+### Изменения в логике
+- **Автоматическое завершение** - после 5-го вопроса квиз завершается автоматически
+- **Гибкий анализ** - результат определяется на основе доступных ответов
+- **Fallback-значения** - если ответа нет, используется логика по умолчанию
+- **Ручное завершение** - зеленая кнопка "Завершить квиз" на последнем вопросе
+
+### Файлы изменены
+- `src/features/onboarding-sleep/store/useOnboardingSleepStore.ts` - убрана строгая проверка ответов
+- `src/features/onboarding-sleep/index.tsx` - добавлена кнопка принудительного завершения
 
 ---

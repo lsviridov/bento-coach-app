@@ -1,119 +1,113 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import type { QuizState, QuizAnswer, ProfileDraft, ResultId } from '../data/types';
-import { calculateScores, determineResult } from '../data/scoring';
 
-interface OnboardingSleepStore extends QuizState {
-  // Actions
-  startQuiz: () => void;
-  answerQuestion: (questionId: string, optionId: string, extraToggle?: boolean) => void;
-  goToNext: () => void;
-  goToPrevious: () => void;
-  goToQuestion: (index: number) => void;
-  completeQuiz: () => void;
-  updateProfileDraft: (updates: Partial<ProfileDraft>) => void;
-  resetQuiz: () => void;
-  
-  // Computed
+type State = {
+  index: number;
+  answers: Record<string, string>;
   isComplete: boolean;
-  currentQuestion: any;
-  progress: number;
-}
-
-const initialState: QuizState = {
-  answers: {},
-  currentIndex: 0,
-  scoreMap: {},
-  resultId: null,
-  profileDraft: null
+  resultId: string | null;
+  setAnswer: (qid: string, opt: string) => void;
+  next: () => void;
+  back: () => void;
+  completeQuiz: () => void;
+  resetQuiz: () => void;
 };
 
-export const useOnboardingSleepStore = create<OnboardingSleepStore>()(
-  devtools(
-    (set, get) => ({
-      ...initialState,
-      
-      startQuiz: () => {
-        set({ 
-          answers: {}, 
-          currentIndex: 0, 
-          scoreMap: {}, 
-          resultId: null, 
-          profileDraft: null 
-        });
-      },
-      
-      answerQuestion: (questionId: string, optionId: string, extraToggle?: boolean) => {
-        const { answers } = get();
-        const newAnswers = {
-          ...answers,
-          [questionId]: { questionId, optionId, extraToggle }
-        };
-        
-        set({ answers: newAnswers });
-      },
-      
-      goToNext: () => {
-        const { currentIndex } = get();
-        if (currentIndex < 4) { // 5 questions, 0-4
-          set({ currentIndex: currentIndex + 1 });
-        }
-      },
-      
-      goToPrevious: () => {
-        const { currentIndex } = get();
-        if (currentIndex > 0) {
-          set({ currentIndex: currentIndex - 1 });
-        }
-      },
-      
-      goToQuestion: (index: number) => {
-        if (index >= 0 && index <= 4) {
-          set({ currentIndex: index });
-        }
-      },
-      
-      completeQuiz: () => {
-        const { answers } = get();
-        const scoreMap = calculateScores(answers);
-        const result = determineResult(scoreMap);
-        
-        set({ 
-          scoreMap, 
-          resultId: result.resultId,
-          currentIndex: 5 // Move to profile form
-        });
-      },
-      
-      updateProfileDraft: (updates: Partial<ProfileDraft>) => {
-        const { profileDraft } = get();
-        set({ 
-          profileDraft: { ...profileDraft, ...updates } as ProfileDraft 
-        });
-      },
-      
-      resetQuiz: () => {
-        set(initialState);
-      },
-      
-      // Computed properties
-      get isComplete() {
-        return get().resultId !== null;
-      },
-      
-      get currentQuestion() {
-        const { currentIndex } = get();
-        const questions = require('../data/questions').questions;
-        return questions[currentIndex];
-      },
-      
-      get progress() {
-        const { currentIndex } = get();
-        return ((currentIndex + 1) / 5) * 100;
-      }
-    }),
-    {
-      name: 'onboarding-sleep-store'
+export const useOnboardingSleepStore = create<State>((set, get) => ({
+  index: 0,
+  answers: {},
+  isComplete: false,
+  resultId: null,
+  setAnswer: (qid, opt) =>
+    set((s) => ({ answers: { ...s.answers, [qid]: opt } })),
+  next: () => {
+    const { index, answers } = get();
+    if (index < 4) { // 5 вопросов (0-4)
+      set({ index: index + 1 });
+    } else if (index === 4) { // Последний вопрос
+      // Завершаем квиз независимо от количества ответов
+      get().completeQuiz();
+    } else if (index === 5) {
+      // Если мы на шаге после вопросов, завершаем квиз
+      get().completeQuiz();
     }
-  )
-);
+  },
+  back: () => set((s) => ({ index: Math.max(0, s.index - 1) })),
+  completeQuiz: () => {
+    const { answers } = get();
+    console.log('Completing quiz with answers:', answers);
+    
+    // Анализируем ответы для определения результата
+    let resultId = 'R1'; // По умолчанию
+    
+    // Вопрос 1: Время ужина и его объем
+    const q1Answer = answers['q1'];
+    const hasLateDinner = q1Answer === 'q1_opt3' || q1Answer === 'q1_opt4';
+    const hasHeavyDinner = q1Answer === 'q1_opt2' || q1Answer === 'q1_opt4';
+    
+    // Вопрос 2: Вечерние углеводы / скачки сахара
+    const q2Answer = answers['q2'];
+    const hasEveningCarbs = q2Answer === 'q2_opt3' || q2Answer === 'q2_opt4';
+    const hasSugarSpikes = q2Answer === 'q2_opt2' || q2Answer === 'q2_opt4';
+    
+    // Вопрос 3: Стимуляторы после 14:00
+    const q3Answer = answers['q3'];
+    const hasStimulants = q3Answer === 'q3_opt3' || q3Answer === 'q3_opt4';
+    
+    // Вопрос 4: Алкоголь, гидратация, ночные пробуждения
+    const q4Answer = answers['q4'];
+    const hasAlcohol = q4Answer === 'q4_opt3' || q4Answer === 'q4_opt4';
+    const hasDehydration = q4Answer === 'q4_opt2' || q4Answer === 'q4_opt4';
+    
+    // Вопрос 5: Состав ужина и рефлюкс
+    const q5Answer = answers['q5'];
+    const hasReflux = q5Answer === 'q5_opt3' || q5Answer === 'q5_opt4';
+    const hasHeavyFood = q5Answer === 'q5_opt2' || q5Answer === 'q5_opt4';
+    
+    console.log('Analysis:', {
+      hasLateDinner,
+      hasHeavyDinner,
+      hasEveningCarbs,
+      hasSugarSpikes,
+      hasStimulants,
+      hasAlcohol,
+      hasDehydration,
+      hasReflux,
+      hasHeavyFood
+    });
+    
+    // Логика определения результата на основе доступных ответов
+    if (hasLateDinner && hasHeavyDinner) {
+      resultId = 'R1'; // Более ранний и легкий ужин
+    } else if (hasStimulants && hasLateDinner) {
+      resultId = 'R2'; // Ограничение стимуляторов + время
+    } else if (hasEveningCarbs && hasSugarSpikes) {
+      resultId = 'R3'; // Контроль углеводов
+    } else if (hasAlcohol || hasDehydration) {
+      resultId = 'R4'; // Гидратация и алкоголь
+    } else if (hasReflux || hasHeavyFood) {
+      resultId = 'R5'; // Состав ужина
+    } else if (hasLateDinner) {
+      resultId = 'R1'; // Если только поздний ужин
+    } else if (hasStimulants) {
+      resultId = 'R2'; // Если только стимуляторы
+    } else if (hasEveningCarbs) {
+      resultId = 'R3'; // Если только вечерние углеводы
+    } else {
+      resultId = 'R5'; // Поддержание текущих привычек (по умолчанию)
+    }
+    
+    console.log('Selected result:', resultId);
+    
+    set({ 
+      isComplete: true, 
+      resultId,
+      index: 6 // Переходим к результату
+    });
+  },
+  resetQuiz: () => set({ 
+    index: 0, 
+    answers: {}, 
+    isComplete: false, 
+    resultId: null 
+  }),
+}));

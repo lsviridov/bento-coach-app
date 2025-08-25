@@ -3,101 +3,101 @@ import type { Plan } from './types';
 export const plans: Record<string, Plan> = {
   R1: {
     id: 'R1',
-    title: 'Earlier, lighter dinner',
-    why: 'Late heavy meals + sweets keep brain alert',
+    title: 'Более ранний и легкий ужин',
+    why: 'Поздние тяжелые приемы пищи + сладости держат мозг в состоянии бодрствования',
     tonight: [
-      'Shift dinner ≥3h before bed',
-      'If hungry: yogurt/cottage+fruit',
-      'Caffeine-free warm drink'
+      'Перенесите ужин ≥3ч до сна',
+      'Если голодны: йогурт/творог+фрукты',
+      'Теплый напиток без кофеина'
     ],
     plan7d: [
-      'Move dinner 1 hour earlier each day',
-      'Replace heavy carbs with protein+veg',
-      'No sweets after 18:00',
-      'Light evening snack: nuts or yogurt',
-      'Herbal tea ritual at 21:00',
-      'Track sleep quality improvement',
-      'Plan next week\'s dinner timing'
+      'Каждый день переносите ужин на 1 час раньше',
+      'Замените тяжелые углеводы на белок+овощи',
+      'Никаких сладостей после 18:00',
+      'Легкий вечерний перекус: орехи или йогурт',
+      'Ритуал травяного чая в 21:00',
+      'Отслеживайте улучшение качества сна',
+      'Планируйте время ужина на следующую неделю'
     ],
     bundleTags: ['evening-light', 'sugar-stable']
   },
   R2: {
     id: 'R2',
-    title: 'Cut stimulants, add ritual',
-    why: 'Caffeine/nicotine delay sleep; alcohol fragments sleep',
+    title: 'Уберите стимуляторы, добавьте ритуал',
+    why: 'Кофеин/никотин задерживают сон; алкоголь фрагментирует сон',
     tonight: [
-      'Caffeine curfew 14:00',
-      'Pick 1 ritual at 22:00',
-      'No alcohol/spicy at dinner'
+      'Кофеиновый комендантский час 14:00',
+      'Выберите 1 ритуал в 22:00',
+      'Никакого алкоголя/острого на ужин'
     ],
     plan7d: [
-      'Gradually reduce caffeine after 14:00',
-      'Create evening wind-down routine',
-      'Replace energy drinks with herbal alternatives',
-      'Limit alcohol to 1 serving max',
-      'Practice deep breathing at 22:00',
-      'Track sleep onset improvement',
-      'Plan caffeine-free alternatives'
+      'Постепенно уменьшайте кофеин после 14:00',
+      'Создайте вечернюю рутину для расслабления',
+      'Замените энергетики на травяные альтернативы',
+      'Ограничьте алкоголь максимум 1 порцией',
+      'Практикуйте глубокое дыхание в 22:00',
+      'Отслеживайте улучшение засыпания',
+      'Планируйте альтернативы без кофеина'
     ],
     bundleTags: ['caffeine-free', 'evening-ritual']
   },
   R3: {
     id: 'R3',
-    title: 'Reflux-safe dinner',
-    why: 'Fatty/spicy ↑reflux → shallow sleep',
+    title: 'Ужин, безопасный для рефлюкса',
+    why: 'Жирная/острая пища ↑рефлюкс → поверхностный сон',
     tonight: [
-      'Small non-spicy dinner',
-      'Last meal ≥3h before bed',
-      'Slightly elevate headboard'
+      'Небольшой неострый ужин',
+      'Последний прием пищи ≥3ч до сна',
+      'Слегка приподнимите изголовье кровати'
     ],
     plan7d: [
-      'Avoid spicy/fatty foods at dinner',
-      'Eat smaller portions, chew slowly',
-      'Stay upright 2-3h after eating',
-      'Identify trigger foods to avoid',
-      'Practice stress-reduction techniques',
-      'Track reflux frequency',
-      'Plan gentle dinner options'
+      'Избегайте острой/жирной пищи на ужин',
+      'Ешьте меньшими порциями, тщательно пережевывайте',
+      'Оставайтесь в вертикальном положении 2-3ч после еды',
+      'Определите продукты-триггеры для избежания',
+      'Практикуйте техники снижения стресса',
+      'Отслеживайте частоту рефлюкса',
+      'Планируйте мягкие варианты ужина'
     ],
     bundleTags: ['low-reflux', 'gentle-gut']
   },
   R4: {
     id: 'R4',
-    title: 'Stable evening glucose',
-    why: 'Sugar swings push wakefulness',
+    title: 'Стабильный вечерний глюкозный уровень',
+    why: 'Скачки сахара провоцируют бодрствование',
     tonight: [
-      'No sweets after dinner',
-      'Protein+fiber dinner',
-      'Small oatmeal 60–90m if cravings'
+      'Никаких сладостей после ужина',
+      'Ужин с белком+клетчаткой',
+      'Небольшая овсянка через 60–90мин при тяге к сладкому'
     ],
     plan7d: [
-      'Balance protein with complex carbs',
-      'Avoid refined sugars after 17:00',
-      'Include healthy fats in dinner',
-      'Plan evening snack alternatives',
-      'Track energy levels after dinner',
-      'Practice mindful eating',
-      'Prepare healthy evening options'
+      'Балансируйте белок со сложными углеводами',
+      'Избегайте рафинированных сахаров после 17:00',
+      'Включайте полезные жиры в ужин',
+      'Планируйте альтернативы вечерним перекусам',
+      'Отслеживайте уровень энергии после ужина',
+      'Практикуйте осознанное питание',
+      'Готовьте здоровые вечерние варианты'
     ],
     bundleTags: ['sugar-stable', 'whole-grains']
   },
   R5: {
     id: 'R5',
-    title: 'Micros for calm sleep',
-    why: 'Low Mg/B6/tryptophan worsens sleep quality',
+    title: 'Микронутриенты для спокойного сна',
+    why: 'Низкий Mg/B6/триптофан ухудшает качество сна',
     tonight: [
-      'Protein+greens dinner',
-      'Herbal tea',
-      'Plan Mg/B6 foods tomorrow'
+      'Ужин с белком+зеленью',
+      'Травяной чай',
+      'Планируйте продукты с Mg/B6 на завтра'
     ],
     plan7d: [
-      'Include leafy greens daily',
-      'Add nuts/seeds to meals',
-      'Choose whole grains over refined',
-      'Include fatty fish 2-3x/week',
-      'Track sleep quality changes',
-      'Plan magnesium-rich snacks',
-      'Consider supplement timing'
+      'Включайте листовую зелень ежедневно',
+      'Добавляйте орехи/семена к приемам пищи',
+      'Выбирайте цельнозерновые вместо рафинированных',
+      'Включайте жирную рыбу 2-3 раза в неделю',
+      'Отслеживайте изменения качества сна',
+      'Планируйте перекусы, богатые магнием',
+      'Рассмотрите время приема добавок'
     ],
     bundleTags: ['magnesium-rich', 'calm-evening']
   }

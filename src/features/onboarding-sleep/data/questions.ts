@@ -3,125 +3,125 @@ import type { Question } from './types';
 export const questions: Question[] = [
   {
     id: 'q1',
-    title: 'Dinner timing & load',
+    title: 'Время ужина и его объем',
     options: [
       {
         id: 'o1',
-        label: '≤2h before bed, light (protein+veg)',
+        label: '≤2ч до сна, легкий (белок+овощи)',
         weights: { D: 1 }
       },
       {
         id: 'o2',
-        label: '≤2h before bed, heavy/spicy',
+        label: '≤2ч до сна, тяжелый/острый',
         weights: { D: -1, T: -2, O: -1 }
       },
       {
         id: 'o3',
-        label: '2–4h before bed, moderate',
+        label: '2–4ч до сна, умеренный',
         weights: { D: 0, T: 1 }
       },
       {
         id: 'o4',
-        label: '>4h; later I snack sweets',
+        label: '>4ч; позже перекусываю сладким',
         weights: { D: -1, T: -1, P: -1 }
       }
     ]
   },
   {
     id: 'q2',
-    title: 'Evening carbs / sugar swings',
+    title: 'Вечерние углеводы / скачки сахара',
     options: [
       {
         id: 'o1',
-        label: 'Sweets/refined snacks',
+        label: 'Сладости/рафинированные перекусы',
         weights: { D: -2, P: -1, O: -1 }
       },
       {
         id: 'o2',
-        label: 'Fruit/yogurt unsweetened/cottage cheese',
+        label: 'Фрукты/йогурт без сахара/творог',
         weights: { D: 1 }
       },
       {
         id: 'o3',
-        label: 'Nothing or herbal tea',
+        label: 'Ничего или травяной чай',
         weights: { P: 1 }
       },
       {
         id: 'o4',
-        label: 'Grazing every 30–60 min (chips etc.)',
+        label: 'Перекусываю каждые 30–60 мин (чипсы и т.д.)',
         weights: { D: -2, P: -1 }
       }
     ]
   },
   {
     id: 'q3',
-    title: 'Stimulants after 14:00',
+    title: 'Стимуляторы после 14:00',
     options: [
       {
         id: 'o1',
-        label: 'Daily coffee/energy drinks',
+        label: 'Ежедневно кофе/энергетики',
         weights: { A: -2 }
       },
       {
         id: 'o2',
-        label: 'Sometimes (1–3×/week)',
+        label: 'Иногда (1–3 раза в неделю)',
         weights: { A: -1 }
       },
       {
         id: 'o3',
-        label: 'Rarely/never',
+        label: 'Редко/никогда',
         weights: { A: 1 }
       }
     ]
   },
   {
     id: 'q4',
-    title: 'Alcohol, hydration, night wake-ups',
+    title: 'Алкоголь, гидратация, ночные пробуждения',
     options: [
       {
         id: 'o1',
-        label: 'Alcohol 1–2 servings, 3–5×/week',
+        label: 'Алкоголь 1–2 порции, 3–5 раз в неделю',
         weights: { P: -2, O: -1 }
       },
       {
         id: 'o2',
-        label: 'Rare/none',
+        label: 'Редко/никогда',
         weights: { P: 1 }
       },
       {
         id: 'o3',
-        label: 'Low water day, compensate late',
+        label: 'Мало воды днем, компенсирую поздно',
         weights: { P: -1 }
       },
       {
         id: 'o4',
-        label: 'Wake at night to bathroom 1–2×',
+        label: 'Просыпаюсь ночью в туалет 1–2 раза',
         weights: { O: -1 }
       }
     ]
   },
   {
     id: 'q5',
-    title: 'Dinner composition & reflux',
+    title: 'Состав ужина и рефлюкс',
     options: [
       {
         id: 'o1',
-        label: 'Protein + fiber (veg/whole)',
+        label: 'Белок + клетчатка (овощи/цельнозерновые)',
         weights: { D: 2 }
       },
       {
         id: 'o2',
-        label: 'Mostly carbs (pasta/rice/bread)',
+        label: 'В основном углеводы (паста/рис/хлеб)',
         weights: { D: -1 }
       },
       {
         id: 'o3',
-        label: 'Fatty/spicy; heartburn sometimes',
+        label: 'Жирный/острый; иногда изжога',
         weights: { D: -1, O: -2, T: -1 }
       },
       {
         id: 'o4',
-        label: 'Few veg; likely low Mg/B6/tryptophan',
+        label: 'Мало овощей; вероятно низкий Mg/B6/триптофан',
         weights: { D: -1, O: -1 }
       }
     ]

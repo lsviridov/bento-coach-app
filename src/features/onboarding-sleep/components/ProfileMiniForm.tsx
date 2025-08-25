@@ -35,10 +35,10 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Quick Profile
+            Быстрый профиль
           </h2>
           <p className="text-gray-600">
-            Help us personalize your sleep plan
+            Помогите нам персонализировать ваш план сна
           </p>
         </div>
 
@@ -46,7 +46,7 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
           {/* Last meal time */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              What time do you usually have dinner?
+              В какое время вы обычно ужинаете?
             </label>
             <input
               type="time"
@@ -60,7 +60,7 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
           {/* Dinner heaviness */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              How heavy is your typical dinner?
+              Насколько тяжелый ваш типичный ужин?
             </label>
             <select
               value={profile.dinner_heaviness}
@@ -68,16 +68,16 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
               className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             >
-              <option value="light">Light (soup, salad, small portion)</option>
-              <option value="moderate">Moderate (balanced meal)</option>
-              <option value="heavy">Heavy (large portion, rich foods)</option>
+              <option value="light">Легкий (суп, салат, небольшая порция)</option>
+              <option value="moderate">Умеренный (сбалансированная еда)</option>
+              <option value="heavy">Тяжелый (большая порция, богатая пища)</option>
             </select>
           </div>
 
           {/* Evening sweets frequency */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              How often do you eat sweets in the evening?
+              Как часто вы едите сладости вечером?
             </label>
             <select
               value={profile.evening_sweets_freq}
@@ -85,17 +85,17 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
               className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             >
-              <option value="never">Never</option>
-              <option value="rarely">Rarely (1-2 times per week)</option>
-              <option value="sometimes">Sometimes (3-4 times per week)</option>
-              <option value="often">Often (5+ times per week)</option>
+              <option value="never">Никогда</option>
+              <option value="rarely">Редко (1-2 раза в неделю)</option>
+              <option value="sometimes">Иногда (3-4 раза в неделю)</option>
+              <option value="often">Часто (5+ раз в неделю)</option>
             </select>
           </div>
 
           {/* Caffeine after 14:00 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              How often do you consume caffeine after 2 PM?
+              Как часто вы потребляете кофеин после 14:00?
             </label>
             <select
               value={profile.caffeine_after_14}
@@ -103,17 +103,17 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
               className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             >
-              <option value="never">Never</option>
-              <option value="rarely">Rarely (1-2 times per week)</option>
-              <option value="sometimes">Sometimes (3-4 times per week)</option>
-              <option value="daily">Daily</option>
+              <option value="never">Никогда</option>
+              <option value="rarely">Редко (1-2 раза в неделю)</option>
+              <option value="sometimes">Иногда (3-4 раза в неделю)</option>
+              <option value="daily">Ежедневно</option>
             </select>
           </div>
 
           {/* Alcohol evening */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              How often do you drink alcohol in the evening?
+              Как часто вы пьете алкоголь вечером?
             </label>
             <select
               value={profile.alcohol_evening}
@@ -121,10 +121,10 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
               className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             >
-              <option value="never">Never</option>
-              <option value="rarely">Rarely (1-2 times per month)</option>
-              <option value="sometimes">Sometimes (1-2 times per week)</option>
-              <option value="often">Often (3+ times per week)</option>
+              <option value="never">Никогда</option>
+              <option value="rarely">Редко (1-2 раза в месяц)</option>
+              <option value="sometimes">Иногда (1-2 раза в неделю)</option>
+              <option value="often">Часто (3+ раза в неделю)</option>
             </select>
           </div>
 
@@ -137,7 +137,7 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
                 onChange={(e) => handleChange('nicotine_evening', e.target.checked)}
                 className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span className="text-gray-700">I use nicotine products in the evening</span>
+              <span className="text-gray-700">Я использую никотиновые продукты вечером</span>
             </label>
 
             <label className="flex items-center space-x-3 cursor-pointer">
@@ -147,7 +147,7 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
                 onChange={(e) => handleChange('late_hydration', e.target.checked)}
                 className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span className="text-gray-700">I drink a lot of water late in the day</span>
+              <span className="text-gray-700">Я пью много воды поздно днем</span>
             </label>
 
             <label className="flex items-center space-x-3 cursor-pointer">
@@ -157,7 +157,7 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
                 onChange={(e) => handleChange('nocturia', e.target.checked)}
                 className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span className="text-gray-700">I wake up to use the bathroom at night</span>
+              <span className="text-gray-700">Я просыпаюсь ночью, чтобы сходить в туалет</span>
             </label>
 
             <label className="flex items-center space-x-3 cursor-pointer">
@@ -167,7 +167,7 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
                 onChange={(e) => handleChange('reflux_flag', e.target.checked)}
                 className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span className="text-gray-700">I experience heartburn or acid reflux</span>
+              <span className="text-gray-700">Я испытываю изжогу или кислотный рефлюкс</span>
             </label>
 
             <label className="flex items-center space-x-3 cursor-pointer">
@@ -177,7 +177,7 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
                 onChange={(e) => handleChange('veg_fiber_low', e.target.checked)}
                 className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span className="text-gray-700">I eat few vegetables and low-fiber foods</span>
+              <span className="text-gray-700">Я ем мало овощей и продуктов с низким содержанием клетчатки</span>
             </label>
 
             <label className="flex items-center space-x-3 cursor-pointer">
@@ -187,7 +187,7 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
                 onChange={(e) => handleChange('micros_gap_hint', e.target.checked)}
                 className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span className="text-gray-700">I suspect I have micronutrient gaps</span>
+              <span className="text-gray-700">Я подозреваю, что у меня есть недостаток микронутриентов</span>
             </label>
           </div>
 
@@ -196,7 +196,7 @@ export const ProfileMiniForm: React.FC<ProfileMiniFormProps> = ({ onComplete }) 
             type="submit"
             className="w-full bg-blue-600 text-white font-semibold py-4 px-8 rounded-xl text-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
-            Save & Continue
+            Сохранить и продолжить
           </button>
         </form>
       </div>

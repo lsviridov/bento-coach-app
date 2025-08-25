@@ -1,117 +1,273 @@
-# Onboarding Sleep Quiz Feature
+# Onboarding Sleep Quiz - Квиз о сне и питании
 
-A comprehensive onboarding quiz that assesses users' sleep and nutrition habits to provide personalized recommendations.
+## Описание
 
-## Features
+Компактный onboarding квиз "Сон × Питание" для приложения ADAPTO. Квиз состоит из 5 вопросов о вечерних привычках питания и сна, после прохождения которых пользователь получает персональный 7-дневный план улучшения качества сна.
 
-- **5-question quiz** covering dinner timing, evening habits, stimulants, alcohol, and meal composition
-- **Smart scoring system** based on ADAPTO framework (Diet, Activators, Protocols, Timing, Outcomes)
-- **Personalized results** with 5 different plan types (R1-R5)
-- **Profile mini-form** for additional context
-- **Bundle recommendations** based on quiz results
-- **Analytics tracking** for key user interactions
-- **Supabase integration** for data persistence
+## Особенности
 
-## Usage
+- **5 вопросов** о питании и привычках сна
+- **Персональные рекомендации** на основе ADAPTO-фреймворка
+- **Мини-профиль** для дополнительной персонализации
+- **Результаты с планом** на сегодня и на неделю
+- **Рекомендуемые наборы** продуктов
+- **Аналитика событий** для отслеживания KPI
+- **Поддержка офлайн-режима** и graceful degradation
+
+## Структура проекта
+
+```
+src/features/onboarding-sleep/
+├── components/           # UI компоненты
+│   ├── QuizStart.tsx    # Начальный экран
+│   ├── QuizQuestion.tsx # Вопросы квиза
+│   ├── QuizProgress.tsx # Прогресс-бар
+│   ├── ProfileMiniForm.tsx # Мини-форма профиля
+│   ├── ResultScreen.tsx # Экран результатов
+│   └── BundleShelf.tsx  # Полка с наборами
+├── data/                # Данные и логика
+│   ├── types.ts         # TypeScript типы
+│   ├── questions.ts     # Вопросы квиза
+│   ├── plans.ts         # Персональные планы
+│   └── scoring.ts       # Логика подсчета баллов
+├── store/               # Управление состоянием
+│   └── useOnboardingSleepStore.ts # Zustand store
+├── services/            # Сервисы
+│   ├── analytics.ts     # Аналитика событий
+│   ├── supabaseClient.ts # Supabase клиент
+│   └── persistence.ts   # Сохранение данных
+├── config.ts            # Конфигурация
+├── index.tsx            # Основной компонент
+├── index.ts             # Экспорты
+└── README.md            # Документация
+```
+
+## Использование
+
+### Базовое использование
 
 ```tsx
-import { OnboardingSleepQuiz } from '@features/onboarding-sleep';
+import { OnboardingSleepQuiz } from '@/features/onboarding-sleep';
+
+function App() {
+  return <OnboardingSleepQuiz />;
+}
+```
+
+### С lazy loading
+
+```tsx
+import { lazy, Suspense } from 'react';
+
+const OnboardingSleepQuiz = lazy(() => 
+  import('@/features/onboarding-sleep').then(module => ({ 
+    default: module.OnboardingSleepQuiz 
+  }))
+);
 
 function App() {
   return (
-    <div>
+    <Suspense fallback={<div>Загрузка...</div>}>
       <OnboardingSleepQuiz />
-    </div>
+    </Suspense>
   );
 }
 ```
 
-## Quiz Flow
+## Поток квиза
 
-1. **Start Screen** - Introduction and value proposition
-2. **Questions 1-5** - One question per screen with progress bar
-3. **Profile Form** - Quick profile questions for personalization
-4. **Result Screen** - Personalized plan with action buttons
-5. **Bundle Shelf** - Recommended products/services
+1. **QuizStart** - Приветствие и описание ценности
+2. **QuizQuestion** (5 вопросов) - Вопросы о привычках
+3. **ProfileMiniForm** - Дополнительная информация о пользователе
+4. **ResultScreen** - Персональный план и рекомендации
+5. **BundleShelf** - Рекомендуемые наборы продуктов
 
-## Question Structure
+## Вопросы квиза
 
-### Q1: Dinner timing & load
-- Options with weights affecting Diet (D) and Timing (T) axes
+### Q1: Время ужина и его объем
+- ≤2ч до сна, легкий (белок+овощи)
+- ≤2ч до сна, тяжелый/острый
+- 2–4ч до сна, умеренный
+- >4ч; позже перекусываю сладким
 
-### Q2: Evening carbs / sugar swings
-- Options affecting Diet (D), Protocols (P), and Outcomes (O)
+### Q2: Вечерние углеводы / скачки сахара
+- Сладости/рафинированные перекусы
+- Фрукты/йогурт без сахара/творог
+- Ничего или травяной чай
+- Перекусываю каждые 30–60 мин
 
-### Q3: Stimulants after 14:00
-- Options affecting Activators (A) axis
-- Extra toggle for nicotine use
+### Q3: Стимуляторы после 14:00
+- Ежедневно кофе/энергетики
+- Иногда (1–3 раза в неделю)
+- Редко/никогда
+- **Дополнительно:** Никотин в вечернее время?
 
-### Q4: Alcohol, hydration, night wake-ups
-- Options affecting Protocols (P) and Outcomes (O)
+### Q4: Алкоголь, гидратация, ночные пробуждения
+- Алкоголь 1–2 порции, 3–5 раз в неделю
+- Редко/никогда
+- Мало воды днем, компенсирую поздно
+- Просыпаюсь ночью в туалет 1–2 раза
 
-### Q5: Dinner composition & reflux
-- Options affecting Diet (D) and Outcomes (O)
+### Q5: Состав ужина и рефлюкс
+- Белок + клетчатка (овощи/цельнозерновые)
+- В основном углеводы (паста/рис/хлеб)
+- Жирный/острый; иногда изжога
+- Мало овощей; вероятно низкий Mg/B6/триптофан
 
-## Scoring System
+## Система подсчета баллов
 
-- Each answer contributes weights to different axes
-- Top 2 negative axes determine the result type
-- 5 result types (R1-R5) with specific recommendations
+### ADAPTO оси
+- **D** (Diet) - Рацион
+- **A** (Activators) - Стимуляторы
+- **P** (Protocols) - Протоколы
+- **T** (Timing) - Тайминг
+- **O** (Outcomes) - Результаты
 
-## Result Types
+### Логика определения результата
+1. Суммируются веса всех ответов по осям
+2. Выбираются топ-2 отрицательные оси
+3. Результат определяется по комбинации осей:
+   - **R1**: D+T (ранний легкий ужин)
+   - **R2**: A+P (стимуляторы + протоколы)
+   - **R3**: D+O (рацион + результаты)
+   - **R4**: D+P (рацион + протоколы)
+   - **R5**: D+O (рацион + результаты)
 
-- **R1**: "Earlier, lighter dinner" - Focus on timing and meal size
-- **R2**: "Cut stimulants, add ritual" - Focus on evening routines
-- **R3**: "Reflux-safe dinner" - Focus on digestive comfort
-- **R4**: "Stable evening glucose" - Focus on blood sugar stability
-- **R5**: "Micros for calm sleep" - Focus on micronutrients
+## Персональные планы
 
-## Data Persistence
+### R1: Более ранний и легкий ужин
+- **Почему:** Поздние тяжелые приемы пищи + сладости держат мозг в состоянии бодрствования
+- **Сегодня:** Перенесите ужин ≥3ч до сна, легкий перекус при голоде
+- **7 дней:** Постепенное изменение времени ужина, замена тяжелых углеводов
 
-The feature saves:
-- Quiz answers and scoring
-- User profile data
-- Selected plan
-- Analytics events
+### R2: Уберите стимуляторы, добавьте ритуал
+- **Почему:** Кофеин/никотин задерживают сон; алкоголь фрагментирует сон
+- **Сегодня:** Кофеиновый комендантский час 14:00, выберите 1 ритуал в 22:00
+- **7 дней:** Постепенное уменьшение кофеина, создание вечерней рутины
 
-## Analytics Events
+### R3: Ужин, безопасный для рефлюкса
+- **Почему:** Жирная/острая пища ↑рефлюкс → поверхностный сон
+- **Сегодня:** Небольшой неострый ужин, последний прием пищи ≥3ч до сна
+- **7 дней:** Избегание триггерных продуктов, техники снижения стресса
 
-- `onboarding_start`
-- `quiz_answered`
-- `profile_completed`
-- `result_shown`
-- `plan_saved`
-- `bundle_viewed`
-- `bundle_saved`
-- `reminder_set`
+### R4: Стабильный вечерний глюкозный уровень
+- **Почему:** Скачки сахара провоцируют бодрствование
+- **Сегодня:** Никаких сладостей после ужина, ужин с белком+клетчаткой
+- **7 дней:** Балансирование белка со сложными углеводами, осознанное питание
 
-## Environment Variables
+### R5: Микронутриенты для спокойного сна
+- **Почему:** Низкий Mg/B6/триптофан ухудшает качество сна
+- **Сегодня:** Ужин с белком+зеленью, травяной чай
+- **7 дней:** Включение листовой зелени, орехов/семян, цельнозерновых
 
-Required Supabase configuration:
-```env
+## Аналитика событий
+
+### Основные события
+- `onboarding_start` - Начало квиза
+- `quiz_answered` - Ответ на вопрос
+- `profile_completed` - Завершение профиля
+- `result_shown` - Показ результатов
+- `plan_saved` - Сохранение плана
+- `bundle_viewed` - Просмотр наборов
+- `bundle_saved` - Сохранение набора
+- `reminder_set` - Установка напоминания
+
+### Использование
+
+```tsx
+import { trackOnboardingEvent } from '@/features/onboarding-sleep';
+
+// Отслеживание события
+trackOnboardingEvent('onboarding_start', { source: 'home_page' });
+```
+
+## Конфигурация
+
+### Переменные окружения
+
+```bash
+# Supabase
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Функции
+VITE_ENABLE_ANALYTICS=true
+VITE_ENABLE_PERSISTENCE=true
 ```
 
-## Testing
+### Конфигурация по умолчанию
 
-Run the scoring tests:
+```tsx
+import { config } from '@/features/onboarding-sleep';
+
+// Проверка доступности Supabase
+if (config.supabase.isConfigured) {
+  // Использовать реальную БД
+} else {
+  // Режим мока
+}
+```
+
+## Тестирование
+
+### Unit тесты
+
 ```bash
-npm test -- src/features/onboarding-sleep/__tests__/scoring.test.ts
+npm test src/features/onboarding-sleep/__tests__/scoring.test.ts
 ```
 
-## Customization
+### Тестирование логики подсчета
 
-- Modify questions in `data/questions.ts`
-- Adjust plans in `data/plans.ts`
-- Update scoring logic in `data/scoring.ts`
-- Customize UI components in `components/`
+```tsx
+import { calculateScores, determineResult } from '@/features/onboarding-sleep';
 
-## Dependencies
+const answers = { /* ответы пользователя */ };
+const scores = calculateScores(answers);
+const result = determineResult(scores);
+```
 
-- React 18+
-- TypeScript
-- Zustand (state management)
-- Supabase JS
-- Tailwind CSS
-- Vitest (testing)
+## Кастомизация
+
+### Добавление новых вопросов
+
+1. Добавьте вопрос в `data/questions.ts`
+2. Обновите типы в `data/types.ts` если необходимо
+3. Добавьте логику подсчета в `data/scoring.ts`
+
+### Изменение планов
+
+1. Отредактируйте планы в `data/plans.ts`
+2. Обновите теги для наборов
+3. Проверьте соответствие логике подсчета
+
+### Новые события аналитики
+
+1. Добавьте событие в `services/analytics.ts`
+2. Создайте helper функцию для отслеживания
+3. Обновите документацию
+
+## Производительность
+
+- **Lazy loading** компонентов
+- **Code splitting** по маршрутам
+- **Оптимизированные хуки** Zustand
+- **Минимальные re-renders** благодаря селекторам
+
+## Доступность
+
+- **ARIA labels** для всех интерактивных элементов
+- **Клавиатурная навигация** между вопросами
+- **Высокий контраст** текста
+- **Большие тач-таргеты** для мобильных устройств
+- **Семантическая разметка** HTML
+
+## Поддержка браузеров
+
+- **Chrome/Edge** 90+
+- **Firefox** 88+
+- **Safari** 14+
+- **Mobile Safari** 14.5+
+
+## Лицензия
+
+MIT License - см. файл LICENSE в корне проекта.

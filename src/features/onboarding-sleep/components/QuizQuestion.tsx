@@ -55,7 +55,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
         
         {/* Question counter */}
         <div className="text-sm text-gray-500 mb-4">
-          Question {currentIndex + 1} of {totalQuestions}
+          Вопрос {currentIndex + 1} из {totalQuestions}
         </div>
 
         {/* Question title */}
@@ -81,7 +81,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
                 checked={localSelectedOption === option.id}
                 onChange={() => handleOptionSelect(option.id)}
                 className="sr-only"
-                aria-label={`Select option: ${option.label}`}
+                aria-label={`Выбрать вариант: ${option.label}`}
               />
               <div className="flex items-start space-x-3">
                 <div className={`w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5 ${
@@ -110,11 +110,11 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
                 className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
               <span className="text-gray-700 font-medium">
-                Nicotine in evening?
+                Никотин в вечернее время?
               </span>
             </label>
             <p className="text-sm text-gray-600 mt-2 ml-8">
-              This affects your stimulant score
+              Это влияет на ваш стимуляторный балл
             </p>
           </div>
         )}
@@ -129,9 +129,9 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
                 ? 'text-gray-400 cursor-not-allowed'
                 : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
             }`}
-            aria-label="Go to previous question"
+            aria-label="Перейти к предыдущему вопросу"
           >
-            Back
+            Назад
           </button>
 
           <button
@@ -142,9 +142,9 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = ({
                 ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
-            aria-label={canProceed ? "Go to next question" : "Please select an option to continue"}
+            aria-label={canProceed ? "Перейти к следующему вопросу" : "Пожалуйста, выберите вариант для продолжения"}
           >
-            {currentIndex === totalQuestions - 1 ? 'Complete' : 'Next'}
+            {currentIndex === totalQuestions - 1 ? 'Завершить' : 'Далее'}
           </button>
         </div>
       </div>

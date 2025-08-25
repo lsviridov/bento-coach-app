@@ -24,5 +24,6 @@ export default defineConfig(({ mode }) => ({
       "@entities": path.resolve(__dirname, "./src/entities"),
       "@shared": path.resolve(__dirname, "./src/shared"),
     },
+    dedupe: ['react', 'react-dom'],
   },
 }));
