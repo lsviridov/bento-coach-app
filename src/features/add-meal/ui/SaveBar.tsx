@@ -14,7 +14,10 @@ export function SaveBar({ onSave, isSaving, isOffline }: SaveBarProps) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-surface border-t border-muted/20 p-4 pb-20 shadow-lg backdrop-blur-sm">
+    <div 
+      className="fixed bottom-0 left-0 right-0 bg-surface border-t border-muted/20 p-4 shadow-lg backdrop-blur-sm z-40"
+      style={{ paddingBottom: 'calc(88px + env(safe-area-inset-bottom) + 16px)' }}
+    >
       <div className="max-w-md mx-auto flex gap-3">
         <button
           onClick={handleCancel}

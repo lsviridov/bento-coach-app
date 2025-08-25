@@ -643,3 +643,22 @@
     scroll-behavior: smooth;
   }
 }
+
+/* Стили для нижней навигации */
+@layer components {
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 88px; /* h-20 (80px) + pt-2 (8px) */
+    padding-bottom: calc(env(safe-area-inset-bottom) + 8px);
+  }
+  
+  /* CSS переменная для высоты нижней навигации */
+  :root {
+    --bottom-nav-height: 88px;
+    --bottom-nav-height-safe: calc(88px + env(safe-area-inset-bottom));
+  }
+}
