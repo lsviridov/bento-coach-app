@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { BottomNav } from '@/widgets';
+import { InstallBlocker } from '@/features/a2hs-blocker';
 import { Home, Camera, BookOpen, ShoppingBag, User, MessageCircle } from 'lucide-react';
 import type { BottomTab } from '@/widgets/bottom-nav';
 
@@ -34,6 +35,8 @@ export const PageLayout = ({
           <BottomNav items={navigationItems} />
         </footer>
       )}
+      
+      <InstallBlocker />
     </div>
   );
 };

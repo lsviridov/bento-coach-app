@@ -46,6 +46,9 @@ pnpm install
 ```bash
 cp .env.example .env.local
 # Edit .env.local with your configuration
+
+# A2HS Blocker Configuration (optional)
+VITE_FORCE_A2HS=1  # Force PWA installation prompt (default: enabled)
 ```
 
 4. Start development server:

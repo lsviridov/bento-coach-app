@@ -20,7 +20,7 @@ export function Chat({
 }: ChatProps) {
   if (isLoading) {
     return (
-      <div className={cn("flex-1 flex items-center justify-center", className)} style={style}>
+      <div className={cn("fixed inset-0 flex items-center justify-center bg-surface/80 backdrop-blur-sm z-50", className)} style={style}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand mx-auto mb-2"></div>
           <p className="text-muted">Коуч думает...</p>
