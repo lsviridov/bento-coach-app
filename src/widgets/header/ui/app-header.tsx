@@ -3,6 +3,7 @@ import { Sun, Moon, ArrowLeft, Settings, Filter, Search, Plus } from "lucide-rea
 import { useTheme } from "@/shared/lib/theme";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { Logo } from "@/shared/ui";
 
 interface AppHeaderProps {
   className?: string;
@@ -125,9 +126,12 @@ export const AppHeader = ({
           </Button>
         )}
         
-        <h1 className="font-display text-2xl font-bold tracking-tight text-ink">
-          {title || getDefaultTitle()}
-        </h1>
+        <div className="flex items-center gap-3">
+          <Logo size="md" className="flex-shrink-0" />
+          <h1 className="font-display text-2xl font-bold tracking-tight text-ink">
+            {title || getDefaultTitle()}
+          </h1>
+        </div>
       </div>
       
       {getRightAction()}

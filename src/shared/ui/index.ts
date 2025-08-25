@@ -6,3 +6,4 @@ export { SectionCard } from './section-card';
 export { ColorShowcase } from './color-showcase';
 export { ContrastTest } from './contrast-test';
 export { BeautyShowcase } from './beauty-showcase';
+export { Logo } from './logo';

@@ -11,6 +11,7 @@ import { ArrowLeft, ShoppingCart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PageLayout } from '@/shared';
 import { ActionFab, CoachBottomSheet } from '@/widgets/coach-entry';
+import { Logo } from '@/shared/ui';
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -147,15 +148,24 @@ export default function ProductDetail() {
         {/* Header */}
         <div className="fixed top-0 left-0 right-0 z-50 bg-bg/95 backdrop-blur-sm border-b border-[color-mix(in_oklab,var(--muted)_20%,transparent)] p-4">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/shop')}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Назад
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/shop')}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Назад
+              </Button>
+              
+              <div className="flex items-center gap-3">
+                <Logo size="md" className="flex-shrink-0" />
+                <h1 className="font-display text-xl font-bold tracking-tight text-ink">
+                  {product.title}
+                </h1>
+              </div>
+            </div>
 
             <CartDrawer>
               <Button variant="outline" size="sm">
