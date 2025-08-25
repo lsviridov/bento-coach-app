@@ -37,7 +37,7 @@ export function CompactProductFilters({ className }: CompactProductFiltersProps)
 
   return (
     <div className={cn(
-      'sticky top-0 z-10 bg-bg/95 backdrop-blur-sm border-b border-[color-mix(in_oklab,var(--muted)_20%,transparent)]',
+      'fixed top-16 left-0 right-0 z-40 bg-bg/95 backdrop-blur-sm border-b border-[color-mix(in_oklab,var(--muted)_20%,transparent)]',
       'p-4 space-y-3',
       className
     )}>

@@ -107,7 +107,7 @@ export const AppHeader = ({
 
   return (
     <header className={cn(
-      "sticky top-0 z-50 w-full header-glass border-b border-surface-200 dark:border-surface-700",
+      "fixed top-0 left-0 right-0 z-50 w-full header-glass border-b border-surface-200 dark:border-surface-700",
       "px-4 h-16 flex items-center justify-between",
       "pt-safe-top",
       className

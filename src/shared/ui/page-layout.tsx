@@ -26,7 +26,8 @@ export const PageLayout = ({
 }: PageLayoutProps) => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="flex-1 overflow-y-auto pb-20">
+      {/* Основной контент с отступом для fixed хедера */}
+      <div className="flex-1 overflow-y-auto pb-20 pt-16">
         {children}
       </div>
       

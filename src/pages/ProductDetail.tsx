@@ -143,9 +143,9 @@ export default function ProductDetail() {
 
   return (
     <PageLayout>
-      <div className="min-h-screen bg-bg">
+      <div className="min-h-screen bg-bg pt-16">
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-bg/95 backdrop-blur-sm border-b border-[color-mix(in_oklab,var(--muted)_20%,transparent)] p-4">
+        <div className="fixed top-0 left-0 right-0 z-50 bg-bg/95 backdrop-blur-sm border-b border-[color-mix(in_oklab,var(--muted)_20%,transparent)] p-4">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
             <Button
               variant="ghost"

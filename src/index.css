@@ -498,9 +498,17 @@
   /* Специальный класс для заголовков с минимальной тенью */
   .header-glass {
     backdrop-filter: blur(16px);
-    background: hsl(var(--surface) / 0.9);
+    background: hsl(var(--surface) / 0.95);
     border: 1px solid hsl(var(--border) / 0.3);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.1);
+    /* Улучшенная поддержка для iOS Safari */
+    -webkit-backdrop-filter: blur(16px);
+    /* Предотвращение проблем с sticky на мобильных */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
   }
   
   /* Новые утилиты для градиентов */
