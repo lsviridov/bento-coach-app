@@ -10,7 +10,7 @@ const mockRecos: Recos = {
       title: 'Пептидный гидролизат куриного белка',
       price_byn: 96,
       reason: 'Высокий белок, цель: рост мышц и восстановление',
-      image_url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop'
+      image_url: '/images/products/peptides/peptides-peptide-chicken-400x400.jpg'
     },
     {
       id: '550e8400-e29b-41d4-a716-446655440002',
@@ -18,7 +18,7 @@ const mockRecos: Recos = {
       title: 'Пептидный гидролизат рыбного белка',
       price_byn: 128,
       reason: 'Легкоусвояемый белок, цель: лёгкость и омега-3',
-      image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&h=200&fit=crop'
+      image_url: '/images/products/peptides/peptides-peptide-fish-400x400.jpg'
     },
     {
       id: '550e8400-e29b-41d4-a716-446655440003',
@@ -26,7 +26,7 @@ const mockRecos: Recos = {
       title: 'Пептидный гидролизат говяжьего белка',
       price_byn: 189,
       reason: 'Мощный белок, цель: сила и выносливость',
-      image_url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=200&fit=crop'
+      image_url: '/images/products/peptides/peptides-peptide-beef-400x400.jpg'
     },
     {
       id: '550e8400-e29b-41d4-a716-446655440004',
@@ -34,7 +34,7 @@ const mockRecos: Recos = {
       title: 'Пептидный гидролизат белка ската',
       price_byn: 402,
       reason: 'Премиум белок, цель: максимальное восстановление',
-      image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&h=200&fit=crop'
+      image_url: '/images/products/peptides/peptides-peptide-skate-400x400.jpg'
     },
     {
       id: '550e8400-e29b-41d4-a716-446655440005',
@@ -42,7 +42,7 @@ const mockRecos: Recos = {
       title: 'Антипаразитарный комплекс',
       price_byn: 53,
       reason: 'Детокс, цель: очищение организма и иммунитет',
-      image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&h=200&fit=crop'
+      image_url: '/images/products/supplements/supplements-antiparasitic-400x400.jpg'
     },
     {
       id: '550e8400-e29b-41d4-a716-446655440006',
@@ -50,7 +50,7 @@ const mockRecos: Recos = {
       title: 'Кальцемарин',
       price_byn: 55,
       reason: 'Кальций и минералы, цель: укрепление костей',
-      image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&h=200&fit=crop'
+      image_url: '/images/products/supplements/supplements-calcemarin-400x400.jpg'
     },
     {
       id: '550e8400-e29b-41d4-a716-446655440007',
@@ -58,7 +58,7 @@ const mockRecos: Recos = {
       title: 'Нуклеамин',
       price_byn: 100,
       reason: 'Восстановление ДНК/РНК, цель: клеточное здоровье',
-      image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&h=200&fit=crop'
+      image_url: '/images/products/supplements/supplements-nucleamin-400x400.jpg'
     },
     {
       id: '550e8400-e29b-41d4-a716-446655440008',
@@ -66,7 +66,7 @@ const mockRecos: Recos = {
       title: 'Ресвератрол',
       price_byn: 66,
       reason: 'Антиоксидант, цель: долголетие и здоровье сердца',
-      image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&h=200&fit=crop'
+      image_url: '/images/products/supplements/supplements-resveratrol-400x400.jpg'
     },
     {
       id: '550e8400-e29b-41d4-a716-446655440009',
@@ -74,7 +74,7 @@ const mockRecos: Recos = {
       title: 'Коллоидное серебро ARGENIX',
       price_byn: 95,
       reason: 'Иммунитет, цель: защита от бактерий',
-      image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&h=200&fit=crop'
+      image_url: '/images/products/supplements/supplements-argenix-400x400.jpg'
     }
   ]
 };
