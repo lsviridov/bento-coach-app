@@ -93,7 +93,7 @@ export function ProfileForm({ profile, onUpdate, isUpdating }: ProfileFormProps)
                 id="full_name"
                 {...register('full_name')}
                 placeholder="Введите ваше имя"
-                className={`text-sm ${errors.full_name ? 'border-destructive' : ''}`}
+                className={`text-sm text-left ${errors.full_name ? 'border-destructive' : ''}`}
               />
               {errors.full_name && (
                 <p className="text-xs sm:text-sm text-destructive">{errors.full_name.message}</p>
@@ -106,7 +106,7 @@ export function ProfileForm({ profile, onUpdate, isUpdating }: ProfileFormProps)
                 id="birthdate"
                 type="date"
                 {...register('birthdate')}
-                className={`text-sm ${errors.birthdate ? 'border-destructive' : ''}`}
+                className={`text-sm text-left ${errors.birthdate ? 'border-destructive' : ''}`}
               />
               {errors.birthdate && (
                 <p className="text-xs sm:text-sm text-destructive">{errors.birthdate.message}</p>
@@ -122,7 +122,7 @@ export function ProfileForm({ profile, onUpdate, isUpdating }: ProfileFormProps)
                 max="250"
                 {...register('height_cm')}
                 placeholder="170"
-                className={`text-sm ${errors.height_cm ? 'border-destructive' : ''}`}
+                className={`text-sm text-left ${errors.height_cm ? 'border-destructive' : ''}`}
               />
               {errors.height_cm && (
                 <p className="text-xs sm:text-sm text-destructive">{errors.height_cm.message}</p>
@@ -139,7 +139,7 @@ export function ProfileForm({ profile, onUpdate, isUpdating }: ProfileFormProps)
                 step="0.1"
                 {...register('weight_kg')}
                 placeholder="70.5"
-                className={`text-sm ${errors.weight_kg ? 'border-destructive' : ''}`}
+                className={`text-sm text-left ${errors.weight_kg ? 'border-destructive' : ''}`}
               />
               {errors.weight_kg && (
                 <p className="text-xs sm:text-sm text-destructive">{errors.weight_kg.message}</p>
