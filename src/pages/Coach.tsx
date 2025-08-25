@@ -48,11 +48,56 @@ export default function Coach() {
   const composerRef = useRef<HTMLDivElement | null>(null);
   const composerH = composerRef.current?.getBoundingClientRect().height ?? 64;
 
+  // Учитываем и CSS-переменную (на случай 0)
+  const cssTabbarH = useMemo(() => {
+    const v = getComputedStyle(document.documentElement)
+      .getPropertyValue('--tabbar-h').replace('px','').trim();
+    return Number(v) || 64;
+  }, []);
+
   // Сколько места снизу нужно оставить списку, чтобы ничего не перекрывалось
   const bottomPad = useMemo(() => {
-    const safe = 8; // доп. отступ
-    return composerH + Math.max(tabbarH, kb) + safe;
-  }, [composerH, tabbarH, kb]);
+    const bar = tabbarH || cssTabbarH;
+    return composerH + bar; // без доп. отступов
+  }, [composerH, tabbarH, cssTabbarH]);
+
+  // Отладочная информация
+  useEffect(() => {
+    console.log('Tabbar height debug:', { tabbarH, cssTabbarH, bottomPad, composerH });
+    console.log('CSS var --tabbar-h:', getComputedStyle(document.documentElement).getPropertyValue('--tabbar-h'));
+    
+    // Проверяем позиционирование композера
+    if (composerRef.current) {
+      const rect = composerRef.current.getBoundingClientRect();
+      console.log('Composer position:', {
+        bottom: rect.bottom,
+        top: rect.top,
+        height: rect.height,
+        zIndex: getComputedStyle(composerRef.current).zIndex,
+        computedBottom: getComputedStyle(composerRef.current).bottom
+      });
+    }
+    
+    // Проверяем позиционирование таббара
+    const tabbarEl = document.getElementById('app-tabbar');
+    if (tabbarEl) {
+      const rect = tabbarEl.getBoundingClientRect();
+      console.log('Tabbar position:', {
+        bottom: rect.bottom,
+        top: rect.top,
+        height: rect.height,
+        zIndex: getComputedStyle(tabbarEl).zIndex
+      });
+      
+      // Проверяем реальную высоту таббара
+      console.log('Tabbar real height:', rect.height);
+      console.log('Tabbar computed height:', getComputedStyle(tabbarEl).height);
+    }
+    
+    // Проверяем размеры экрана
+    console.log('Viewport height:', window.innerHeight);
+    console.log('Document height:', document.documentElement.scrollHeight);
+  }, [tabbarH, cssTabbarH, bottomPad, composerH]);
 
   useEffect(() => {
     // Если есть сессии, берём первую активную
@@ -92,21 +137,25 @@ export default function Coach() {
   };
 
   // Общий композер для всех состояний
-  const renderComposer = () => (
-    <div
-      ref={composerRef}
-      className="fixed left-0 right-0 z-40 border-t bg-[var(--surface)]/85 backdrop-blur-md"
-      style={{
-        bottom: `calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px))`,
-        transform: `translateY(-${kb}px)`
-      }}
-    >
-      <Composer 
-        onSend={handleSend} 
-        disabled={isSending || !currentSessionId} 
-      />
-    </div>
-  );
+  const renderComposer = () => {
+    const tabbarHeight = tabbarH || cssTabbarH;
+    
+    return (
+      <div
+        ref={composerRef}
+        className="fixed left-0 right-0 z-[60] border-t bg-[var(--surface)]/85 backdrop-blur-md"
+        style={{
+          top: `calc(100vh - ${tabbarHeight + composerH + 8}px)`, // позиционируем от верха экрана
+          transform: `translateY(-${kb}px)`
+        }}
+      >
+        <Composer 
+          onSend={handleSend} 
+          disabled={isSending || !currentSessionId} 
+        />
+      </div>
+    );
+  };
 
   // Main content
   return (
@@ -130,7 +179,7 @@ export default function Coach() {
       />
       
       {/* Content */}
-      <div className="flex-1 overflow-y-auto pb-20">
+      <div className="flex-1 overflow-y-auto">
         {showHistory ? (
           // History view
           <div className="p-4 space-y-4">
@@ -199,13 +248,13 @@ export default function Coach() {
         )}
       </div>
       
+      {/* Composer - рендерим ПЕРЕД таббаром */}
+      {renderComposer()}
+      
       {/* Bottom Navigation */}
-      <div className="fixed inset-x-0 bottom-0 z-30">
+      <div id="app-tabbar" className="fixed inset-x-0 bottom-0 z-50">
         <BottomNav items={navigationItems} />
       </div>
-      
-      {/* Composer */}
-      {renderComposer()}
     </div>
   );
 }

@@ -1,6 +1,12 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import { installZoomBlocker } from './app/disableZoom'
+
+// Отключаем зум если включен флаг
+if (import.meta.env.VITE_DISABLE_ZOOM === '1') {
+  installZoomBlocker();
+}
 
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {

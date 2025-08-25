@@ -415,6 +415,22 @@
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }
+  
+  /* Отключение зума для PWA */
+  html { 
+    -webkit-text-size-adjust: 100%; 
+    text-size-adjust: 100%; 
+  }
+  
+  button, [role="button"], a, input, textarea, select {
+    touch-action: manipulation; /* убирает delay/double-tap-zoom */
+  }
+  
+  /* +16px чтобы iOS не делал zoom при фокусе */
+  input, textarea, select { 
+    font-size: 16px; 
+    line-height: 1.25; 
+  }
 }
 
 @layer utilities {

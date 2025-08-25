@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { AppHeader, DailySummary } from '@/widgets';
 import { CoachTip } from '@/widgets/coach-tip';
 import { WeekStrip } from '@/widgets/week-strip';
-import { TrendsMini } from '@/widgets/trends-mini';
+import { TrendsWeek } from '@/widgets/trends-week-v2';
 import { NextProtocol } from '@/widgets/next-protocol';
 import { ShopRecos } from '@/widgets/shop-recos';
 import { PhotoActions } from '@/features';
@@ -50,7 +50,7 @@ const Index = () => {
           <section className="space-y-6">
             <CoachTip />
             <WeekStrip />
-            <TrendsMini />
+            <TrendsWeek />
             <NextProtocol />
             <ShopRecos />
           </section>

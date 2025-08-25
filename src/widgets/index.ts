@@ -11,5 +11,6 @@ export { QuickActions } from './quick-actions';
 export { CoachTip } from './coach-tip';
 export { WeekStrip } from './week-strip';
 export { TrendsMini } from './trends-mini';
+export { TrendsWeek } from './trends-week-v2';
 export { NextProtocol } from './next-protocol';
 export { ShopRecos } from './shop-recos';

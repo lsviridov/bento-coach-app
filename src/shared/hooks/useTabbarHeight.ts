@@ -1,27 +1,47 @@
 import { useEffect, useState } from 'react';
 
 export function useTabbarHeight() {
-  const [h, setH] = useState(0);
-  
+  const [h, setH] = useState(64); // дефолт
+
   useEffect(() => {
-    const el = document.getElementById('app-tabbar');
-    if (!el) return;
+    let retryCount = 0;
+    const maxRetries = 10;
     
-    const ro = new ResizeObserver(() => {
-      const nh = el.getBoundingClientRect().height;
-      setH(nh);
-      document.documentElement.style.setProperty('--tabbar-h', `${nh}px`);
-    });
-    
-    ro.observe(el);
-    
-    // Устанавливаем начальное значение
-    const initialH = el.getBoundingClientRect().height;
-    setH(initialH);
-    document.documentElement.style.setProperty('--tabbar-h', `${initialH}px`);
-    
-    return () => ro.disconnect();
+    const findAndMeasure = () => {
+      const el = document.getElementById('app-tabbar');
+      if (!el) {
+        if (retryCount < maxRetries) {
+          retryCount++;
+          setTimeout(findAndMeasure, 100); // retry через 100ms
+          return;
+        }
+        // если не нашли после всех попыток, используем дефолт
+        setH(64);
+        document.documentElement.style.setProperty('--tabbar-h', '64px');
+        return;
+      }
+
+      const apply = () => {
+        const nh = el.getBoundingClientRect().height || 64;
+        setH(nh);
+        document.documentElement.style.setProperty('--tabbar-h', `${nh}px`);
+        console.log('Tabbar height updated:', nh);
+      };
+
+      apply();
+      const ro = new ResizeObserver(apply);
+      ro.observe(el);
+      window.addEventListener('resize', apply);
+      
+      return () => {
+        ro.disconnect();
+        window.removeEventListener('resize', apply);
+      };
+    };
+
+    // Запускаем поиск элемента
+    findAndMeasure();
   }, []);
-  
+
   return h;
 }
