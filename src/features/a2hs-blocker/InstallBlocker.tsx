@@ -1,6 +1,26 @@
 'use client';
 import { useEffect, useRef } from 'react';
+// Иконки созданы с нуля для точного соответствия iOS интерфейсу
 import { useA2HS } from './useA2HS';
+
+// Кастомные векторные иконки для iOS интерфейса
+const ShareIcon = () => (
+  <svg className="inline w-4 h-4" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Коробочка с разрывом сверху */}
+    <path d="M4 10L8 8L12 10L16 8L20 10V22H4V10Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+    {/* Стрелочка вверх с острым треугольным кончиком */}
+    <path d="M12 0L12 8M8 5L12 1L16 5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="butt" strokeLinejoin="miter"/>
+  </svg>
+);
+
+const HomeScreenIcon = () => (
+  <svg className="inline w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Квадратик */}
+    <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
+    {/* Плюс по центру */}
+    <path d="M12 8V16M8 12H16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+  </svg>
+);
 
 export function InstallBlocker() {
   const { shouldBlock, platform, inApp, supportsPrompt, promptInstall, setInstalled } = useA2HS(true);
@@ -36,18 +56,18 @@ export function InstallBlocker() {
       aria-label="Установка приложения"
       tabIndex={-1}
       ref={modalRef}
-      className="fixed inset-0 z-[99999] flex flex-col items-center justify-between bg-[color:var(--bg,#0b0b0c)] text-[color:var(--ink,#14151a)]"
+      className="fixed inset-0 z-[99999] flex flex-col items-center justify-between backdrop-blur-xl bg-black/80 text-white"
       onKeyDown={(e) => {
         // примитивный focus trap
         if (e.key === 'Tab') { e.preventDefault(); }
       }}
     >
-      <header className="w-full max-w-sm px-6 pt-10 text-center">
-        <h1 className="text-xl font-semibold text-white">Установи ADAPTO на домашний экран</h1>
-        <p className="mt-2 text-sm text-white/80">Так приложение работает офлайн, быстрее стартует и получает пуш-уведомления.</p>
-      </header>
-
-      <main className="w-full max-w-sm grow px-6 py-4">
+      <main className="w-full max-w-sm grow px-6 py-4 flex flex-col justify-center">
+        {/* Заголовок и подзаголовок */}
+        <div className="text-center mb-6">
+          <h1 className="text-xl font-semibold text-white">Установи ADAPTO на домашний экран</h1>
+          <p className="mt-2 text-sm text-white/80">Так приложение работает офлайн, быстрее стартует и получает пуш-уведомления.</p>
+        </div>
         {inApp && (
           <div className="mb-4 rounded-2xl border border-white/15 bg-white/5 p-3 text-white/85">
             Вы открыли ссылку во встроенном браузере. Пожалуйста, откройте в {platform === 'ios' ? 'Safari' : 'Chrome'}, чтобы установить.
@@ -78,20 +98,15 @@ export function InstallBlocker() {
 
         {platform === 'ios' && (
           <div className="rounded-2xl border border-white/15 bg-white/5 p-4 text-white/90">
-            <p className="text-sm">Откройте в Safari → нажмите <b>Поделиться</b> → <b>На экран «Домой»</b> → <b>Добавить</b>.</p>
-            <p className="mt-2 text-xs text-white/70">После установки запустите приложение с ярлыка — блокировка исчезнет.</p>
-            <button
-              className="mt-4 w-full rounded-full bg-white/10 px-4 py-3 text-white"
-              onClick={() => {
-                // если пользователь уже поставил и вернулся через тот же таб: позволяем снять блокировку вручную
-                if (confirm('Я уже установил и открыл с ярлыка')) {
-                  localStorage.setItem('a2hs-installed','1');
-                  setInstalled(true);
-                }
-              }}
-            >
-              Я установил(а)
-            </button>
+            <ol className="list-decimal space-y-3 pl-5 text-sm">
+              <li className="flex items-center gap-2">
+                Нажмите <ShareIcon /> <b>Поделиться</b>
+              </li>
+              <li className="flex items-center gap-2">
+                Выберите <HomeScreenIcon /> <b>На экран «Домой»</b>
+              </li>
+            </ol>
+            <p className="mt-3 text-xs text-white/70">После установки запустите приложение с ярлыка — блокировка исчезнет.</p>
           </div>
         )}
 
