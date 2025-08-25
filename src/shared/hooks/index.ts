@@ -5,3 +5,4 @@ export { useToday } from './useToday';
 export { useMockProfile } from './useMockProfile';
 export { useMockShop } from './useMockShop';
 export { useMockSessions, useMockMessages, useMockSend } from './useMockCoach';
+export { useScrollToTop } from './useScrollToTop';

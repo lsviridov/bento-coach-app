@@ -17,3 +17,4 @@ export { useMockProfile } from './hooks/useMockProfile';
 export { useMockShop } from './hooks/useMockShop';
 export { useMockSessions, useMockMessages, useMockSend } from './hooks/useMockCoach';
 export { useTabbarHeight } from './hooks/useTabbarHeight';
+export { useScrollToTop } from './hooks/useScrollToTop';
