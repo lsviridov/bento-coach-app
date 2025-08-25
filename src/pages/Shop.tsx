@@ -84,7 +84,7 @@ export default function Shop() {
     return (
       <PageLayout>
         <AppHeader title="Магазин" variant="shop" />
-        <div className="min-h-screen bg-bg p-4 pt-32">
+        <div className="min-h-screen bg-bg p-4">
           <CompactProductFilters />
           <div className="grid grid-cols-2 gap-4 mt-4">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -105,7 +105,7 @@ export default function Shop() {
     return (
       <PageLayout>
         <AppHeader title="Магазин" variant="shop" />
-        <div className="min-h-screen bg-bg p-4 pt-32">
+        <div className="min-h-screen bg-bg p-4">
           <CompactProductFilters />
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="text-6xl mb-4">😞</div>
@@ -129,7 +129,7 @@ export default function Shop() {
     return (
       <PageLayout>
         <AppHeader title="Магазин" variant="shop" />
-        <div className="min-h-screen bg-bg p-4 pt-32">
+        <div className="min-h-screen bg-bg p-4">
           <CompactProductFilters />
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="text-6xl mb-4">🔍</div>
@@ -165,7 +165,7 @@ export default function Shop() {
         }}
       />
       
-      <div className="min-h-screen bg-bg pt-32">
+      <div className="min-h-screen bg-bg">
         {/* Фильтры */}
         <CompactProductFilters />
 

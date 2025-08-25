@@ -33,7 +33,7 @@ export function Profile() {
     return (
       <PageLayout>
         <AppHeader title="Профиль" variant="profile" />
-        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl">
+        <div className="container mx-auto px-3 sm:px-4 space-y-4 sm:space-y-6 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl">
           {/* Header Skeleton */}
           <div className="flex flex-col items-center space-y-4 text-center">
             <Skeleton className="h-16 w-16 sm:h-20 sm:w-20 rounded-full" />
@@ -73,7 +73,7 @@ export function Profile() {
     return (
       <PageLayout>
         <AppHeader title="Профиль" variant="profile" />
-        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl">
+        <div className="container mx-auto px-3 sm:px-4 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl">
           <Alert variant="destructive">
             <AlertDescription className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
               <span>Не удалось загрузить профиль</span>
@@ -97,7 +97,7 @@ export function Profile() {
     return (
       <PageLayout>
         <AppHeader title="Профиль" variant="profile" />
-        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl">
+        <div className="container mx-auto px-3 sm:px-4 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl">
           <Alert>
             <AlertDescription>
               Профиль не найден. Попробуйте обновить страницу.
@@ -112,7 +112,7 @@ export function Profile() {
     <PageLayout>
       <AppHeader title="Профиль" variant="profile" />
       
-      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl overflow-hidden">
+      <div className="container mx-auto px-3 sm:px-4 space-y-4 sm:space-y-6 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl overflow-hidden">
         {/* Offline Notice */}
         {isOffline && (
           <Alert className="bg-warning/10 border-warning/20 text-warning">

@@ -117,7 +117,7 @@ export default function Camera() {
   };
 
   return (
-    <PageLayout>
+    <PageLayout className="!pt-0">
       <AppHeader title="Анализ фото" />
       {/* Область камеры - всегда видна как "окошко" */}
       {!selectedImage && (
@@ -129,25 +129,36 @@ export default function Camera() {
 
       {/* Альтернативные способы загрузки фото */}
       {!selectedImage && (
-        <div className="bg-surface rounded-xl p-4 border shadow-neon dark:shadow-neon-dark">
-          <h3 className="text-sm font-medium text-ink mb-3">Или выберите фото другим способом</h3>
+        <div className="bg-surface rounded-xl p-5 border shadow-neon dark:shadow-neon-dark mt-4">
+          <div className="bg-gradient-to-r from-accent/10 to-accent/5 px-4 py-3 rounded-lg border border-accent/20 mb-4">
+            <h3 className="text-base font-semibold text-ink mb-2 flex items-center gap-2">
+              Альтернативные способы
+            </h3>
+            <p className="text-sm text-muted">Выберите фото из галереи или загрузите файл</p>
+          </div>
           <CameraUploader onImageSelect={handleImageSelect} />
         </div>
       )}
 
       {/* Превью фото */}
       {selectedImage && imagePreview && (
-        <div className="bg-surface rounded-xl p-4 border shadow-neon dark:shadow-neon-dark">
+        <div className="bg-surface rounded-xl p-5 border shadow-neon dark:shadow-neon-dark mt-4">
+          <div className="bg-gradient-to-r from-brand/10 to-brand/5 px-4 py-3 rounded-lg border border-brand/20 mb-4">
+            <h3 className="text-base font-semibold text-ink mb-2 flex items-center gap-2">
+              Предварительный просмотр
+            </h3>
+            <p className="text-sm text-muted">Проверьте фото перед анализом</p>
+          </div>
           <div className="relative">
             <img 
               src={imagePreview} 
               alt="Предварительный просмотр" 
-              className="w-full h-64 object-cover rounded-lg"
+              className="w-full h-80 object-cover rounded-lg shadow-lg"
             />
-            <div className="absolute top-2 right-2 space-x-2">
+            <div className="absolute top-3 right-3">
               <button
                 onClick={handleRetake}
-                className="px-3 py-1 bg-surface/80 backdrop-blur-sm text-ink rounded-full text-sm border"
+                className="px-4 py-2 bg-surface/90 backdrop-blur-md text-ink rounded-full text-sm font-medium border border-muted/20 hover:bg-surface hover:scale-105 transition-all shadow-lg"
               >
                 Переснять
               </button>
@@ -169,20 +180,26 @@ export default function Camera() {
 
       {/* Результат анализа */}
       {analysisResult && (
-        <div className="bg-surface rounded-xl p-4 border shadow-neon dark:shadow-neon-dark">
-          <h3 className="text-lg font-semibold text-ink mb-3">Результат анализа</h3>
-          <div className="space-y-3">
+        <div className="bg-surface rounded-xl p-5 border shadow-neon dark:shadow-neon-dark mt-4">
+          <div className="bg-gradient-to-r from-success/10 to-success/5 px-4 py-3 rounded-lg border border-success/20 mb-4">
+            <h3 className="text-lg font-semibold text-ink mb-2 flex items-center gap-2">
+              Результат анализа
+            </h3>
+            <p className="text-sm text-muted">ИИ распознал следующие продукты</p>
+          </div>
+          <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
               {analysisResult.labels.map((label, index) => (
                 <span 
                   key={index}
-                  className="px-3 py-1 bg-brand-50 text-brand rounded-full text-sm"
+                  className="px-4 py-2 bg-brand-50 text-brand rounded-full text-sm font-medium border border-brand/20 shadow-sm"
                 >
                   {label}
                 </span>
               ))}
             </div>
-            <div className="text-sm text-muted">
+            <div className="flex items-center gap-2 text-sm text-muted bg-muted/10 px-3 py-2 rounded-lg">
+              <div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
               Уверенность: {Math.round(analysisResult.confidence.reduce((a, b) => a + b, 0) / analysisResult.confidence.length * 100)}%
             </div>
           </div>
@@ -191,17 +208,18 @@ export default function Camera() {
 
       {/* Ошибка анализа */}
       {analysisError && (
-        <div className="bg-surface rounded-xl p-4 border border-warning/20 shadow-neon dark:shadow-neon-dark">
-          <div className="flex items-center gap-2 text-warning mb-2">
-            <span className="text-lg">⚠️</span>
-            <span className="font-medium">Не удалось распознать</span>
+        <div className="bg-surface rounded-xl p-5 border border-warning/20 shadow-neon dark:shadow-neon-dark mt-4">
+                      <div className="bg-gradient-to-r from-warning/10 to-warning/5 px-4 py-3 rounded-lg border border-warning/20 mb-4">
+            <div className="flex items-center gap-2 text-warning mb-2">
+              <span className="font-semibold text-lg">Не удалось распознать</span>
+            </div>
+            <p className="text-muted text-sm mb-3">
+              {analysisError}
+            </p>
+            <p className="text-ink text-sm font-medium">
+              Введите данные о приёме пищи вручную
+            </p>
           </div>
-          <p className="text-muted text-sm mb-3">
-            {analysisError}
-          </p>
-          <p className="text-ink text-sm">
-            Введите данные о приёме пищи вручную
-          </p>
         </div>
       )}
 
@@ -224,14 +242,14 @@ export default function Camera() {
       )}
 
       {/* Альтернативные действия */}
-      <div className="text-center space-y-3">
-        <button className="text-brand hover:text-brand/80 text-sm">
+      <div className="text-center space-y-4 mt-6 p-4 bg-surface/50 rounded-xl border border-muted/20">
+        <button className="text-brand hover:text-brand/80 text-sm font-medium hover:scale-105 transition-transform">
           Добавить вручную
         </button>
         <div className="text-muted text-xs">
           или
         </div>
-        <button className="text-muted hover:text-ink text-sm">
+        <button className="text-muted hover:text-ink text-sm font-medium hover:scale-105 transition-transform">
           Ввести без фото
         </button>
       </div>

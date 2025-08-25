@@ -3,6 +3,7 @@ import { BottomNav } from '@/widgets';
 import { InstallBlocker } from '@/features/a2hs-blocker';
 import { Home, Camera, BookOpen, ShoppingBag, User, MessageCircle } from 'lucide-react';
 import type { BottomTab } from '@/widgets/bottom-nav';
+import { cn } from '@/lib/utils';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -27,7 +28,7 @@ export const PageLayout = ({
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Основной контент с отступом для fixed хедера */}
-      <div className="flex-1 overflow-y-auto pb-20 pt-16">
+      <div className={cn("flex-1 overflow-y-auto pb-20 pt-16", className)}>
         {children}
       </div>
       

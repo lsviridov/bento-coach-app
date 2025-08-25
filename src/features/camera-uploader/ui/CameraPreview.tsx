@@ -116,9 +116,9 @@ export function CameraPreview({ onCapture, isActive = true }: CameraPreviewProps
   return (
     <div className="bg-surface rounded-xl border shadow-neon dark:shadow-neon-dark overflow-hidden">
       {/* Заголовок области камеры */}
-      <div className="bg-brand-50 px-4 py-3 border-b border-muted/20">
-        <h3 className="text-sm font-medium text-brand">Живая камера</h3>
-        <p className="text-xs text-muted">Наведите на еду и нажмите кнопку съёмки</p>
+      <div className="bg-gradient-to-r from-brand-50 to-brand/10 px-4 py-4 border-b border-muted/20">
+        <h3 className="text-base font-semibold text-brand mb-1">Живая камера</h3>
+        <p className="text-sm text-muted">Наведите на еду и нажмите кнопку съёмки</p>
       </div>
 
       {/* Видео поток */}
@@ -128,7 +128,7 @@ export function CameraPreview({ onCapture, isActive = true }: CameraPreviewProps
           autoPlay
           playsInline
           muted
-          className="w-full h-64 object-cover"
+          className="w-full h-80 object-cover"
         />
         
         {/* Скрытый canvas для захвата фото */}
@@ -136,9 +136,9 @@ export function CameraPreview({ onCapture, isActive = true }: CameraPreviewProps
 
         {/* Индикатор активности */}
         {isStreaming && (
-          <div className="absolute top-2 left-2 flex items-center gap-2">
-            <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-            <span className="text-xs text-white bg-black/50 px-2 py-1 rounded-full backdrop-blur-sm">
+          <div className="absolute top-3 left-3 flex items-center gap-2">
+            <div className="w-3 h-3 bg-success rounded-full animate-pulse shadow-lg"></div>
+            <span className="text-xs text-white bg-black/60 px-3 py-1.5 rounded-full backdrop-blur-md font-medium shadow-lg">
               Камера активна
             </span>
           </div>
@@ -148,10 +148,10 @@ export function CameraPreview({ onCapture, isActive = true }: CameraPreviewProps
         {isStreaming && (
           <button
             onClick={switchCamera}
-            className="absolute top-2 right-2 w-8 h-8 bg-surface/80 backdrop-blur-sm rounded-full flex items-center justify-center text-ink hover:bg-surface transition-colors"
+            className="absolute top-3 right-3 w-10 h-10 bg-surface/90 backdrop-blur-md rounded-full flex items-center justify-center text-ink hover:bg-surface hover:scale-110 active:scale-95 transition-all shadow-lg border border-muted/20"
             title="Переключить камеру"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
           </button>
@@ -159,33 +159,42 @@ export function CameraPreview({ onCapture, isActive = true }: CameraPreviewProps
       </div>
 
       {/* Панель управления */}
-      <div className="p-4 bg-surface">
+      <div className="p-6 bg-gradient-to-t from-surface to-surface/95">
         <div className="flex items-center justify-center">
           {/* Кнопка съёмки */}
           <button
             onClick={capturePhoto}
             disabled={!isStreaming || isCapturing}
-            className="w-16 h-16 bg-brand text-white rounded-full flex items-center justify-center hover:bg-brand/90 active:bg-brand/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg"
+            className="w-20 h-20 bg-gradient-to-r from-brand to-brand/80 text-white rounded-full flex items-center justify-center hover:from-brand/90 hover:to-brand/70 active:from-brand/80 active:to-brand/60 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-xl hover:shadow-2xl transform hover:scale-105 active:scale-95"
             title="Снять фото"
           >
             {isCapturing ? (
-              <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <div className="w-10 h-10 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
             ) : (
-              <div className="w-10 h-10 bg-white rounded-full border-2 border-brand"></div>
+              <div className="w-12 h-12 bg-white rounded-full border-3 border-brand shadow-inner"></div>
             )}
           </button>
         </div>
         
         {/* Статус */}
-        <div className="text-center mt-3">
+        <div className="text-center mt-4">
           {!isStreaming && (
-            <p className="text-xs text-muted">Запуск камеры...</p>
+            <div className="flex items-center justify-center gap-2 text-muted">
+              <div className="w-3 h-3 bg-muted rounded-full animate-pulse"></div>
+              <p className="text-sm">Запуск камеры...</p>
+            </div>
           )}
           {isStreaming && !isCapturing && (
-            <p className="text-xs text-success">Готов к съёмке</p>
+            <div className="flex items-center justify-center gap-2 text-success">
+              <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+              <p className="text-sm font-medium">Готов к съёмке</p>
+            </div>
           )}
           {isCapturing && (
-            <p className="text-xs text-brand">Обработка фото...</p>
+            <div className="flex items-center justify-center gap-2 text-brand">
+              <div className="w-4 h-4 border-2 border-brand/30 border-t-brand rounded-full animate-spin"></div>
+              <p className="text-sm font-medium">Обработка фото...</p>
+            </div>
           )}
         </div>
       </div>
