@@ -1,0 +1,145 @@
+---
+alwaysApply: true
+---
+# MCP Tools Usage Rules (Cursor)
+
+## Available MCP Tools
+- **openai-gpt-image-mcp** — генерация и редактирование изображений.
+- **context7** — получение актуальной, версионно-специфичной документации и примеров кода.
+- **playwright** — автоматизация браузера, e2e-тестирование, проверка доступности.
+- **supabase** — работа с БД, аутентификацией, хранилищем и RPC-функциями.
+
+---
+
+## General Principles
+- Используй MCP-интеграции, если они позволяют получить более свежие данные, автоматизировать задачу или выполнить её безопаснее.
+- Перед использованием MCP указывай, какой инструмент применяешь и зачем.
+- Если инструмент вернул нерелевантный результат — уточняй запрос или используй альтернативу.
+
+---
+
+## Context7
+**Что делает:**  
+- Получает свежую, версионно-точную документацию и примеры кода напрямую из официальных источников.
+- Исключает устаревшие или «галлюцинированные» API.
+
+**Когда использовать:**  
+- Перед реализацией или изменением кода, зависящего от библиотеки/фреймворка.
+- При подозрении на изменения API в новой версии.
+- При миграциях или обновлениях зависимостей.
+
+**Правила работы:**  
+1. Определи точную версию пакета из package.json / lock-файлов.
+2. Формируй запрос вида: `<package>@<version> + тема + пример кода`.
+3. Предпочитай официальные источники (документация, репозиторий, релиз-ноты).
+4. Сверяй результат с локальными TS-типами.
+5. В ответ добавляй блок:
+```
+
+\[context7] using: <lib>@<version>
+sources: <url1> <url2>
+notes: <ключевые особенности версии>
+
+````
+
+**Примеры запросов:**  
+- `react-hook-form@7 Controller file input example`
+- `next@14 app router route handlers streaming example`
+- `zod@3 refine() vs superRefine() differences`
+- `supabase-js@2 auth signInWithOAuth server-side example`
+
+---
+
+## Playwright
+**Когда использовать:**  
+- Для e2e-тестов, UI-скриншотов, проверки доступности и воспроизведения сценариев.
+
+**Правила:**  
+- Используй `data-testid` вместо CSS/XPath.
+- Применяй явные ожидания (`expect().toBeVisible()`), без `sleep()`.
+- Каждый тест — изолированный и детерминированный.
+- Добавляй проверки доступности при необходимости.
+
+**Шаблон:**
+```ts
+import { test, expect } from '@playwright/test';
+
+test('user can sign in and create item', async ({ page }) => {
+await page.goto(process.env.E2E_BASE_URL!);
+await page.getByTestId('signin-email').fill('user@example.com');
+await page.getByTestId('signin-password').fill('******');
+await page.getByTestId('signin-submit').click();
+await expect(page.getByTestId('dashboard')).toBeVisible();
+
+await page.getByTestId('create-item').click();
+await page.getByLabel('Title').fill('Sample');
+await page.getByTestId('save-item').click();
+await expect(page.getByText('Saved')).toBeVisible();
+});
+````
+
+---
+
+## Supabase
+
+**Когда использовать:**
+
+* Для CRUD, аутентификации, работы с хранилищем файлов и вызова функций.
+
+**Правила:**
+
+* Всегда проверяй `{ data, error }`.
+* Типизируй все ответы.
+* Не храни секреты в коде — используй `.env`.
+* Используй RLS и политики безопасности.
+
+**Примеры:**
+
+```ts
+// Query
+const { data, error } = await supabase
+  .from('items')
+  .select('*')
+  .eq('owner_id', userId)
+  .limit(50);
+if (error) return { success: false, error: error.message };
+return { success: true, data };
+
+// Auth
+const { data: { user }, error } = await supabase.auth.getUser();
+if (error || !user) return { success: false, error: 'Unauthorized' };
+
+// Storage
+const { data, error } = await supabase.storage
+  .from('avatars')
+  .upload(path, file, { upsert: true });
+```
+
+---
+
+## openai-gpt-image-mcp
+
+**Когда использовать:**
+
+* Для генерации иллюстраций, баннеров, UI-макетов.
+
+**Правила:**
+
+* Указывай содержание, композицию, стиль, размер и ограничения.
+* Для редактирования — описывай область и точные изменения.
+* Для повторяемых результатов — фиксируй seed.
+
+**Пример запроса:**
+
+```
+Task: hero banner for landing
+Content: person at laptop, abstract waves
+Style: clean, modern, soft gradients
+Aspect: 16:9, high-res
+Variants: 3
+Constraints: safe margins for headline overlay
+```
+
+```
+
+---

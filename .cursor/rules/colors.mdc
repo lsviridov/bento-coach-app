@@ -1,0 +1,246 @@
+---
+alwaysApply: true
+---
+# adapto-colors.md — палитра и правила использования
+
+Этот документ фиксирует палитру ADAPTO, роли цветов и техническую интеграцию в проект (Next.js + Tailwind, PWA). Служит **единственным источником правды** для дизайна и кода.
+
+---
+
+## Цели палитры
+
+* Спокойная медицинская база + энергичные акценты «здоровья/свежести».
+* Чёткая читабельность и доступность (WCAG AA+).
+* Единые токены для света/тьмы, чтобы тема менялась без правок компонентов.
+
+---
+
+## Базовые токены (semantic → physical)
+
+| Токен (CSS var) | Роль                            |                 Light (HEX) |                 Dark (HEX) |
+| --------------- | ------------------------------- | --------------------------: | -------------------------: |
+| `--bg`          | фон приложения                  |                   `#FFFFFF` | `#023436` (Midnight green) |
+| `--surface`     | поверхности карточек/панелей    |                   `#F8FEFE` |                  `#0B1C1C` |
+| `--ink`         | основной текст                  |                   `#0F1113` |                  `#E7F4F3` |
+| `--muted`       | вторичный текст/бордеры         |                   `#6B7B85` |                  `#9ECBC6` |
+| `--brand`       | фирменный цвет (CTA, прогресс)  | `#2EC4B6` (Light sea green) |     `#03B5AA` (Pine green) |
+| `--brand-50`    | светлый фон бренда              |            `#CBF3F0` (Mint) |                  `#0E3E3C` |
+| `--accent`      | дополнительный акцент/подсветка |     `#FF9F1C` (Orange peel) |          `#FF8552` (Coral) |
+| `--success`     | успех/положит. статус           |                   `#1EC28B` |                  `#3FD7A5` |
+| `--warning`     | предупреждение                  |                   `#FFB020` |                  `#FFC766` |
+| `--danger`      | ошибка/критика                  |                   `#E5484D` |                  `#FF6B73` |
+| `--ring`        | обводка фокуса                  |             `#2EC4B6` @ 40% |            `#03B5AA` @ 50% |
+
+> **Контраст:** текст на `--surface` и `--bg` должен иметь ≥ 4.5:1 (обычный) или ≥ 3:1 (крупный ≥ 24 px/700).
+
+---
+
+## Градиенты и «glow»
+
+* `--grad-brand`: `linear-gradient(135deg, #2EC4B6 0%, #43E6E8 100%)`
+* `--grad-accent`: `linear-gradient(135deg, #FF9F1C 0%, #FFB03A 100%)`
+* `--shadow-neon`: мягкое свечение для карточек/колец
+
+  * Light: `0 8px 30px rgba(46,196,182,.20)`
+  * Dark: `0 8px 30px rgba(3,181,170,.25)`
+
+Используйте glow **аккуратно** (фоновые карточки/прогресс), не на тексте.
+
+---
+
+## Слои поверхностей (elevation)
+
+| Уровень   | Назначение       | Тень/бордер (Light)              | Тень/бордер (Dark)                  |
+| --------- | ---------------- | -------------------------------- | ----------------------------------- |
+| Surface-0 | плоская подложка | нет                              | нет                                 |
+| Surface-1 | карточки, плитки | `shadow-sm` + `border` `#E8F3F3` | `shadow` + `border` `#0F2A2A`       |
+| Surface-2 | модалки, панели  | `shadow-md`                      | `shadow-lg`                         |
+| Frosted   | стекло (blur)    | `backdrop-blur-lg; bg-white/60`  | `backdrop-blur-lg; bg-[#072121]/55` |
+
+---
+
+## Состояния (buttons/links/inputs)
+
+| Состояние          | Фон/обводка                                           | Текст/иконка  |
+| ------------------ | ----------------------------------------------------- | ------------- |
+| **Hover**          | затемнить/осветлить базовый на 4–6%                   | без изменений |
+| **Active/Pressed** | затемнить/осветлить на 10–12%                         | без изменений |
+| **Focus**          | `outline: 2px solid var(--ring); outline-offset: 2px` | —             |
+| **Disabled**       | понизить альфу до 40%, курсор `not-allowed`           | 40–60%        |
+
+---
+
+## Нейтральная шкала (для бордеров/скелетонов)
+
+Light: `#F6FAFA`, `#EEF5F5`, `#E5EFEF`, `#D7E5E5`
+Dark:  `#051A1A`, `#0A2323`, `#103030`, `#1A3D3D`
+
+---
+
+## Примеры применения
+
+### Кнопки
+
+* **Primary**: фон `--brand`, текст `#001514` (в тёмной — `#041F1F`/белый, смотрите контраст), ховер ±5%.
+* **Secondary**: фон `--brand-50`, текст `--ink`.
+* **Ghost**: фон прозрачен, текст `--ink`, при ховере фон `--brand-50` @ 40%.
+
+### Карточки
+
+* Фон `--surface`, радиус **24px**, тень `--shadow-neon` (опционально), бордер 1px нейтральный.
+
+### Кольца прогресса
+
+* Строка `--brand`, фон трека `--brand-50` (Light) / `#0E3E3C` (Dark), лёгкий «inner-glow».
+
+### Навигация
+
+* Активная вкладка — текст/иконка `--brand`; индикатор 2px `--brand`.
+
+---
+
+## Внедрение в код
+
+### 1) CSS-переменные тем
+
+```css
+/* globals.css */
+:root[data-theme='light']{
+  --bg:#FFFFFF; --surface:#F8FEFE;
+  --ink:#0F1113; --muted:#6B7B85;
+  --brand:#2EC4B6; --brand-50:#CBF3F0;
+  --accent:#FF9F1C;
+  --success:#1EC28B; --warning:#FFB020; --danger:#E5484D;
+  --ring: rgba(46,196,182,.40);
+}
+:root[data-theme='dark']{
+  --bg:#023436; --surface:#0B1C1C;
+  --ink:#E7F4F3; --muted:#9ECBC6;
+  --brand:#03B5AA; --brand-50:#0E3E3C;
+  --accent:#FF8552;
+  --success:#3FD7A5; --warning:#FFC766; --danger:#FF6B73;
+  --ring: rgba(3,181,170,.50);
+}
+```
+
+### 2) Tailwind маппинг
+
+```ts
+// tailwind.config.ts (фрагмент)
+export default {
+  theme: {
+    extend: {
+      colors: {
+        bg: 'var(--bg)',
+        surface: 'var(--surface)',
+        ink: 'var(--ink)',
+        muted: 'var(--muted)',
+        brand: { DEFAULT: 'var(--brand)', 50: 'var(--brand-50)' },
+        accent: 'var(--accent)',
+        success: 'var(--success)',
+        warning: 'var(--warning)',
+        danger: 'var(--danger)',
+      },
+      boxShadow: {
+        neon: '0 8px 30px rgba(46,196,182,.20)',
+        'neon-dark': '0 8px 30px rgba(3,181,170,.25)',
+      },
+      borderRadius: { xl: '24px', pill: '9999px' },
+    }
+  }
+}
+```
+
+### 3) Примеры компонентов
+
+```tsx
+// Primary Button
+<button className="rounded-pill px-5 py-3 bg-brand text-white
+                    hover:brightness-95 active:brightness-90
+                    focus:outline focus:outline-2 focus:outline-[var(--ring)]">
+  По фото
+</button>
+
+// Card
+<div className="bg-surface rounded-xl shadow-neon dark:shadow-neon-dark border border-[color-mix(in_oklab, var(--muted) 20%, transparent)]"/>
+```
+
+---
+
+## Тексты и контраст
+
+* Крупные заголовки (H1/Hero) — можно делать градиентной заливкой из `--grad-brand`/`--grad-accent`, но **только** на тёмных блоках и с fallback цветом `--ink`.
+* Body/подписи — всегда сплошной цвет `--ink`/`--muted`.
+
+---
+
+## Стеклянные панели (backdrop-blur)
+
+Для «стекла» используйте:
+
+```css
+.glass {
+  backdrop-filter: blur(16px);
+  background: color-mix(in oklab, var(--bg) 60%, transparent);
+  border: 1px solid color-mix(in oklab, var(--muted) 20%, transparent);
+}
+```
+
+Ограничьте до **≤3** одновременных панелей на экране (производительность).
+
+---
+
+## Do / Don’t
+
+**Do**
+
+* Поддерживать AA контраст, проверять длинные русские слова.
+* Использовать `--brand-50` для мягких подложек/бэджей.
+* Сохранять один главный акцент на экран (brand **или** accent).
+
+**Don’t**
+
+* Большие зоны насыщенного `--accent` под текст (в тёмной теме бликует).
+* Свечение на мелких шрифтах/иконках.
+* Хардкод HEX в компонентах — только токены.
+
+---
+
+## Нейминг токенов компонентов (примеры)
+
+| Компонент        | Токены                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------- |
+| Button/Primary   | `bg: --brand`, `fg: #FFF`, `hover: brightness-95`, `focus: --ring`                                |
+| Button/Secondary | `bg: --brand-50`, `fg: --ink`                                                                     |
+| Button/Ghost     | `bg: transparent`, `fg: --ink`, `hover-bg: color-mix(in oklab, var(--brand-50) 40%, transparent)` |
+| Card             | `bg: --surface`, `shadow: neon/neon-dark`, `border: neutral`                                      |
+| Input            | `bg: --surface`, `border: neutral`, `focus: --ring`                                               |
+| Progress Ring    | `track: --brand-50`, `stroke: --brand`                                                            |
+
+---
+
+## Управление темой
+
+* На `<html>` переключайте `data-theme="light|dark"`.
+* Сохраняйте выбор пользователя в `localStorage('theme')`.
+* Учитывайте `prefers-color-scheme` как дефолт.
+
+---
+
+## Проверка качества
+
+* Линтер: запрет «жёстких» цветов (поиск `#` в `.tsx/.ts/.css` кроме этого файла/токенов).
+* Снимки цветов в Storybook: создать `Palette.stories.tsx` с плитками всех токенов.
+
+---
+
+## Изменение палитры
+
+1. Меняйте **только** значения переменных в секциях `:root[data-theme=...]`.
+2. Проверяйте контраст авто-тестом в Storybook (addon-a11y).
+3. Не меняйте названия токенов без миграции.
+
+---
+
+**Версия документа:** 1.0
+**Ответственные:** Дизайн-система / Фронтенд-гильдия ADAPTO

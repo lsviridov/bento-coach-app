@@ -1,0 +1,305 @@
+---
+alwaysApply: true
+---
+# adapto-stack-mdc.md — правила использования стэка
+
+**Цель документа:** единые правила разработки для ADAPTO (PWA) — что используем, как, где и зачем. Формат **MDC**: требования, запреты, критерии приёмки (DoD) для инфраструктуры кода, процессов и инструментов.
+
+---
+
+## 1) Область действия (Scope)
+
+* **Фронт:** Next.js 14 (App Router) + TypeScript (strict), Tailwind, FSD.
+* **PWA:** манифест, SW/Workbox, `/offline`, установка и Web Push.
+* **Данные:** Supabase (Postgres + Auth + Storage) с RLS.
+* **Очереди/кэш:** Redis + BullMQ.
+* **Сервисы:** `cv` (FastAPI/ONNX), `assistant` (Node/FastAPI + LLM).
+* **Интеграции:** bePaid/ЕРИП (redirect + вебхуки).
+* **Тесты:** Vitest/Jest, Playwright, Storybook.
+* **Наблюдаемость:** Sentry, (опц.) OpenTelemetry, Grafana stack.
+
+---
+
+## 2) Версии и менеджеры
+
+* **Node:** 20.x LTS.
+* **Пакетный менеджер:** `pnpm` (lockfile обязателен).
+* **Runtime флаги:** TS `strict: true`, `noUncheckedIndexedAccess: true`.
+* **Браузеры:** мобильные Chromium/Firefox/iOS Safari 16.4+.
+
+**DoD:** `node -v` и `pnpm -v` соответствуют README; сборка проходит локально и в CI.
+
+---
+
+## 3) Архитектура и структура
+
+### 3.1 Слои FSD (жёстко)
+
+`app → processes → widgets → features → entities → shared`
+
+* Импорт **только вниз по слоям**.
+* Импорт модулей **только** через `index.ts` каждого слайса (публичный API).
+* **Запрещены** deep-imports (`@features/x/model/...`) — отлавливается ESLint.
+
+### 3.2 Дерево
+
+```
+src/
+  app/(app)/{app,camera,diary,protocols,shop,orders,offline}/page.tsx
+  processes/{checkout,onboarding}/
+  widgets/{header,bottom-nav,daily-summary,shop-highlight}/
+  features/{analyze-photo,add-meal,checkout,push-subscribe}/
+  entities/{meal,product,order,protocol,user}/
+  shared/{ui,api,config,lib,hooks,store,styles}
+```
+
+**DoD:** линтер `boundaries` зелёный; нет циклов зависимостей (`dependency-cruiser`).
+
+---
+
+## 4) Код-стайл и инструменты
+
+* **ESLint:** `@typescript-eslint`, `eslint-plugin-boundaries`, `import/no-internal-modules`.
+* **Prettier:** единая конфигурация; без кастомных правил в файлах.
+* **Husky + lint-staged:** форматирование и линт на pre-commit.
+* **Conventional Commits:** `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`.
+
+**DoD:** PR проходит `pnpm lint` и `pnpm typecheck`; коммиты валидны по префиксам.
+
+---
+
+## 5) Стили и дизайн-система
+
+* **Tailwind:** токены из `adapto-colors.md` (CSS variables).
+* **Шрифты:** `next/font` (Unbounded — display, Manrope — text, с кириллицей).
+* Радиусы: карточки 24px, кнопки pill 9999px, мягкие тени, контроль контраста AA+.
+
+**Запрет:** хардкод HEX в компонентах — только токены.
+
+---
+
+## 6) Состояние и данные
+
+* **Server State:** `@tanstack/react-query` (QueryClient в `app/layout.tsx`).
+* **UI State:** `zustand` только для cross-page состояния (auth/cart/flags).
+* **Формы:** `react-hook-form` + `zod` схемы.
+* **Дата/время:** `date-fns` (`UTC` для БД; локаль для UI).
+* **i18n (MVP):** RU-словари модульно (без runtime форматтеров).
+
+**Правило:** Любой ввод/вывод данных валидируется через `zod`.
+
+---
+
+## 7) API, ошибки и сетевой слой
+
+* **BFF** (Next.js API Routes) — единственная точка общения фронта с бэком и внешними API.
+* **Клиент:** `@shared/api/fetcher.ts` — обёртка над `fetch` с таймаутом, `zod`-валидацией, маппингом ошибок.
+
+**Шаблон API-маршрута (сервер):**
+
+```ts
+// src/app/api/analyze/route.ts
+import { z } from 'zod';
+import { NextResponse } from 'next/server';
+
+const Body = z.object({ imageUrl: z.string().url() });
+
+export async function POST(req: Request) {
+  const parsed = Body.safeParse(await req.json());
+  if (!parsed.success) return NextResponse.json({ error: 'Bad Request' }, { status: 422 });
+
+  try {
+    // ... вызов CV/LLM через серверные ключи
+    return NextResponse.json({ labels: [], confidence: [], calories: 0, protein: 0, fat: 0, carbs: 0, defaultGrams: 250 });
+  } catch (e) {
+    return NextResponse.json({ error: 'Internal' }, { status: 500 });
+  }
+}
+```
+
+**Шаблон клиента:**
+
+```ts
+// src/shared/api/fetcher.ts
+export async function api<T>(path: string, init?: RequestInit): Promise<T> {
+  const ctrl = new AbortController();
+  const id = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`, { ...init, signal: ctrl.signal });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    return res.json() as Promise<T>;
+  } finally { clearTimeout(id); }
+}
+```
+
+**DoD:** для каждого API есть `zod` схема ответа и юнит-тест контракта.
+
+---
+
+## 8) PWA и офлайн
+
+* Манифест, maskable icons, iOS meta, `/offline`.
+* SW через Workbox:
+
+  * `CacheFirst`: шрифты/иконки.
+  * `StaleWhileRevalidate`: `/api/products`, `/api/me/day`.
+  * `NetworkFirst`: навигация/страницы.
+* Background Sync: очередь офлайн-операций (meals, water).
+
+**DoD:** офлайн-режим проверен: `/offline` открывается; черновики синкаются.
+
+---
+
+## 9) Supabase (БД, Auth, Storage)
+
+* Схемы и RLS — см. `supabase.sql` (из SQL Editor версии).
+* Все запросы — через `@shared/api/supabaseClient` (typed).
+* Хранение фото: приватный бакет; публичные URL — только подписанные/временные при необходимости.
+
+**Запрет:** обход RLS или прямой доступ к service-key из клиента.
+
+---
+
+## 10) Очереди и фоновые задачи
+
+* **Redis + BullMQ:** очереди `cv:classify`, `push:send`.
+* Ретраи с экспоненциальной задержкой, идемпотентность по `jobId`.
+* n8n — cron и интеграционные сценарии (напоминания).
+
+**DoD:** для очередей настроены метрики (кол-во jobs, retries, failures).
+
+---
+
+## 11) Платежи
+
+* Redirect-флоу (top-level window) + вебхуки на сервере.
+* Валидация HMAC/подписи, защита от повторов (`provider_ref` уникально).
+* `orders.status` изменяется **только** сервис-ролями.
+
+**DoD:** sandbox оплата проходит end-to-end; вебхук обновляет статус ≤5с.
+
+---
+
+## 12) Безопасность
+
+* **CSP**, `Referrer-Policy`, `X-Content-Type-Options`, `X-Frame-Options`.
+* **CORS:** только из `ALLOWED_ORIGINS`.
+* **Secrets:** только в сервере/CI (1Password/Doppler).
+* **PII:** минимум хранения; экспорт/удаление по запросу (MVP — тикет).
+
+**Запрет:** ключи `service_role`, `BEPAY_SECRET_KEY`, `VAPID_PRIVATE_KEY` в клиенте.
+
+---
+
+## 13) Наблюдаемость и аналитика
+
+* **Sentry:** фронт + сервер; релизы помечаются коммит-SHA и env.
+* **Events (front):** `page_view`, `meal_saved`, `checkout_paid`, и т.д. из `adapto-user-flow.md`.
+* **Perf:** Web Vitals (LCP, INP, CLS) и трассировки критичных API.
+
+**DoD:** ошибки фронта и сервера видны в Sentry; базовые дашборды есть.
+
+---
+
+## 14) Тестирование
+
+* **Unit:** Vitest/Jest — утилы, zod-схемы, интенты коуча.
+* **Component:** Storybook (визуальные снапшоты), a11y-аддон.
+* **E2E:** Playwright — happy-потоки (камера→анализ→сохранение; покупка; офлайн).
+* **Контрактные тесты:** API маршруты с фикстурами.
+
+**DoD:** CI запускает `pnpm test`, `pnpm test:e2e` на PR в `develop`.
+
+---
+
+## 15) Производительность
+
+* **Бюджеты:** initial JS ≤ **230KB** gz, LCP ≤ 2.5s (4G), INP ≤ 200ms.
+* `next/image` + lazy + `sizes`.
+* Не более 2–3 активных `backdrop-filter`.
+* Критичная логика — code-split по страницам.
+
+**DoD:** бандл-анализ без регрессий; Web Vitals в зелёной зоне.
+
+---
+
+## 16) Git-процесс и релизы
+
+* Ветки: `main` (prod), `develop` (staging), feature-ветки от `develop`.
+* PR-шаблон: цель, скриншоты, чек-лист DoD, влияния на схему/окружение.
+* **CI/CD:** GitHub Actions → сборка → деплой контейнеров (web, cv, assistant) на Contabo; миграции Supabase CLI.
+
+**DoD:** релиз сопровождается changelog (Conventional Commits → auto-changelog).
+
+---
+
+## 17) Работа с Cursor и Lovable
+
+* **Lovable:** генерация UI в рамках FSD; запрещены deep-imports; Storybook обязателен.
+* **Cursor:** рефактор, интеграции, тесты; строго следовать alias-ам и правилам линтера.
+* В README указать «гайд для ИИ» (краткий свод правил импорта/структуры).
+
+**DoD:** после генерации — запускаются линтеры/типы, нет нарушений FSD.
+
+---
+
+## 18) Безопасные примеры (cookbook)
+
+### 18.1 Запрос к БД (server action)
+
+```ts
+// src/entities/meal/model/repo.ts
+import { createClient } from '@supabase/supabase-js';
+export async function listMeals(uid: string, dateISO: string) {
+  const supa = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+  return supa.from('meals').select('*').eq('user_id', uid).gte('taken_at', dateISO).order('taken_at', { ascending: false });
+}
+```
+
+> **Примечание:** service-key — только в server actions/route handlers (никогда в клиенте). Для клиента — anon-key + RLS.
+
+### 18.2 React Query + zod
+
+```ts
+const DaySummary = z.object({ water: z.number(), protein: z.number(), protocol: z.number() });
+const useDay = () => useQuery({
+  queryKey: ['day'],
+  queryFn: async () => DaySummary.parse(await api('/api/me/day')),
+  staleTime: 30_000
+});
+```
+
+---
+
+## 19) Anti-patterns (запрещено)
+
+* Обход BFF и прямые вызовы внешних API из клиента.
+* Вклейка HTML/JS в dangerouslySetInnerHTML без нужды.
+* Общий «суперконтекст» для всего приложения (memory-leak).
+* Логирование секретов/PII.
+* Смешивание UI и данных (сетевые вызовы внутри `ui/*`).
+
+---
+
+## 20) Checklists (DoD)
+
+**Для любого PR:**
+
+* [ ] нет deep-imports; слои соблюдены
+* [ ] типы и линтер — ок
+* [ ] добавлены тесты (unit/компонент/E2E по необходимости)
+* [ ] обработаны loading/empty/error/offline
+* [ ] a11y: фокусы, aria-лейблы, контраст
+* [ ] события аналитики добавлены/обновлены
+* [ ] производительность не просела (бандл, vitals)
+* [ ] обновлена документация (если затронуты env/схемы/флоу)
+
+**Для релиза:**
+
+* [ ] миграции БД применены
+* [ ] Sentry релиз создан
+* [ ] Health-пробы сервисов зелёные
+* [ ] мониторинг очередей/пушей зелёный
+* [ ] changelog с основными изменениями
+
+---

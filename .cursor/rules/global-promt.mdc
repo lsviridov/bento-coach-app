@@ -1,0 +1,200 @@
+---
+alwaysApply: true
+---
+# adapto-global-prompt.md — глобальные **MDC rules** для Cursor
+
+> **Вставь целиком в Project Rules / Assistant (Pinned) в Cursor.**
+> Эти правила обязательны для всего проекта **ADAPTO**. Если есть конфликт — сначала следуй этому документу, затем `adapto-stack-mdc.md`, затем `adapto-mdc-pages.md`, `adapto-user-flow.md`, `adapto-colors.md`, `adapto-env.md`.
+
+---
+
+## 0) Короткий манифест (верхний блок для Cursor)
+
+**You are coding for the ADAPTO mobile-first PWA. Obey Feature-Sliced Design. Never do deep imports. Export from slice roots only. Validate all I/O with zod. Use Tailwind tokens only (no raw HEX). Implement loading/empty/error/offline states. Keep accessibility AA. Enforce performance budgets (initial JS ≤230KB gz). No secrets on client. All external calls go via server (BFF). Prefer tests and Storybook for new UI.**
+
+---
+
+## 1) Архитектурные догмы (жёстко)
+
+* **FSD-слои:** `app → processes → widgets → features → entities → shared`.
+  Импорт **только вниз**. Нарушения запрещены.
+* **Публичный API модулей:** импорт **только** из `index.ts` слайса
+  (например, `import { AnalyzePhotoButton } from '@features/analyze-photo'`).
+* **Запреты:**
+
+  * deep-imports (`@features/x/model/...`)
+  * прямые внешние запросы из клиентских компонентов (только через BFF)
+  * хардкод цветов/шрифтов (только токены и `next/font`)
+  * хранение ключей/секретов в `NEXT_PUBLIC_*`, кроме явно публичных
+
+---
+
+## 2) Файловая структура (создавай именно так)
+
+```
+src/
+  app/(app)/{app,camera,diary,protocols,shop,orders,offline}/page.tsx
+  processes/{checkout,onboarding}/
+  widgets/{header,bottom-nav,daily-summary,shop-highlight}/
+  features/{analyze-photo,add-meal,checkout,push-subscribe}/
+  entities/{meal,product,order,protocol,user}/
+  shared/{ui,api,config,lib,hooks,store,styles}
+```
+
+**Шаблоны слайсов:**
+
+```
+<slice>/
+  model/   # бизнес-логика, hooks, zod schemas
+  ui/      # визуальные компоненты
+  lib/     # хелперы (если нужно)
+  index.ts # публичный API (экспорт наружу)
+```
+
+---
+
+## 3) Стек и паттерны
+
+* **Next.js 14 (App Router), TS strict, Tailwind, PWA**.
+* **Данные:** Supabase (RLS включён).
+* **Состояние:** React Query (server state) + Zustand (UI/app flags).
+* **Формы/валидация:** `react-hook-form` + `zod`.
+* **Время:** `date-fns` (БД — UTC, UI — локаль).
+* **Шрифты:** `next/font` (Unbounded — display, Manrope — text, с кириллицей).
+* **Цвета:** только CSS-токены из `adapto-colors.md`.
+
+---
+
+## 4) PWA и офлайн (обязательно)
+
+* Манифест, maskable icons, iOS meta, `/offline`.
+* Workbox стратегии:
+
+  * Fonts/icons → `CacheFirst`
+  * `/api/products`, `/api/me/day` → `StaleWhileRevalidate`
+  * Навигация/страницы → `NetworkFirst`
+* Offline drafts + Background Sync для `meals/water`.
+* iOS: платить в **новом топ-уровневом окне**; пуши — только у установленной иконки.
+
+---
+
+## 5) API-контракты и сетевой слой
+
+* Весь клиентский код ходит в **BFF** (Next API Routes) через `@shared/api/fetcher`.
+* Каждый маршрут имеет `zod`-схемы **входа и выхода** и unit-тест контракта.
+* Ошибки: 4xx/5xx маппятся на читаемые сообщения и `toast`/UI-статусы.
+
+**Пример клиента:**
+
+```ts
+// @shared/api/fetcher.ts
+export async function api<T>(path: string, init?: RequestInit): Promise<T> {
+  const ctrl = new AbortController(); const id = setTimeout(()=>ctrl.abort(), 15000);
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`, { ...init, signal: ctrl.signal });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    return res.json() as Promise<T>;
+  } finally { clearTimeout(id); }
+}
+```
+
+---
+
+## 6) UI/UX правила
+
+* Следуй `adapto-mdc-pages.md` и `adapto-user-flow.md`.
+* Каждый экран обязан иметь: **loading / empty / error / offline** состояния.
+* Доступность: hit-area ≥44×44, видимый `:focus`, aria-лейблы, контраст **AA+**.
+* Типографика: `font-display` для H1/героев, `font-sans` для остального.
+* Анимации ≤250ms, без тяжёлого блёра/параллакса (≤3 `backdrop-filter` на экран).
+
+---
+
+## 7) Производительность и бандл-бюджеты
+
+* Initial JS ≤ **230KB gz**. LCP ≤ 2.5s (4G), INP ≤ 200ms.
+* Используй `next/image`, lazy, `sizes`.
+* Code-split по маршрутам; Storybook/моки не тянут лишнее в prod.
+
+---
+
+## 8) Безопасность
+
+* **RLS** во всех пользовательских таблицах.
+* **CSP**, `Referrer-Policy`, `X-Content-Type-Options`, `X-Frame-Options`.
+* **CORS** только из `ALLOWED_ORIGINS`.
+* **Никогда** не раскрывай: `service_role`, `BEPAY_SECRET_KEY`, `VAPID_PRIVATE_KEY`.
+* Платёжные вебхуки: валидация HMAC, идемпотентность.
+
+---
+
+## 9) Аналитика и события
+
+Логируй ключевые события из `adapto-user-flow.md`:
+`home_opened`, `analyze_started/succeeded/failed`, `meal_saved`,
+`added_to_cart`, `checkout_started/paid/failed`,
+`push_enabled/disabled`, `offline_op_queued/sync_succeeded`, и др.
+
+---
+
+## 10) Что делать при неопределённости
+
+1. **Не выдумывай API/схемы.** Предложи `zod`-контракт и спроси подтверждение комментариями в коде.
+2. Если данных нет — **добавь MSW-моки** (детерминированные).
+3. При сомнении в стиле — **используй токены** и компоненты из уже существующих widgets/features.
+4. Если конфликт слоёв — **рефактори** в правильный слайс, не нарушая импортов.
+
+---
+
+## 11) Генерация нового кода (обязательный шаблон)
+
+**Новая feature** `X`:
+
+```
+src/features/x/
+  model/useX.ts     // бизнес-логика, react-query/zod
+  ui/XButton.tsx    // UI
+  index.ts          // export { XButton, useX }
+```
+
+**Тесты:** `*.test.ts` для model/lib, Storybook для UI.
+**Импорт:** `import { XButton } from '@features/x'`.
+
+---
+
+## 12) DoD чек-лист (каждый PR обязателен)
+
+* [ ] Нет deep-imports, слои FSD соблюдены
+* [ ] Типы и ESLint зелёные; линтер границ не ругается
+* [ ] Добавлены **loading/empty/error/offline**
+* [ ] Все I/O через `zod`; ошибки обрабатываются
+* [ ] A11y: фокусы, aria-лейблы, контраст
+* [ ] События аналитики отправляются
+* [ ] Бюджеты перфоманса не просели
+* [ ] Storybook/тесты для новой UI/логики
+* [ ] Обновил(а) документацию, если затронуты env/схемы/флоу
+
+---
+
+## 13) Быстрые подсказки для Cursor (вставляй как mini-prompts)
+
+* **“Create a feature `push-subscribe` using FSD: model+ui+index, export via slice root, no deep imports. Use Web Push public key from env, add zod validation and Storybook.”**
+* **“Refactor `widgets/daily-summary` to accept typed props and provide loading/empty/error/offline.”**
+* **“Implement `/api/analyze` route with zod input `{ imageUrl: string }` and typed response; add unit test for the schema.”**
+* **“Enforce Tailwind tokens: replace raw HEX with CSS variables from `adapto-colors.md`.”**
+
+---
+
+## 14) Связанные документы (читать как спецификации)
+
+* `adapto-stack-mdc.md` — правила стэка и инструментов
+* `adapto-mdc-pages.md` — правила страниц
+* `adapto-user-flow.md` — пользоват. флоу
+* `adapto-colors.md` — палитра и токены
+* `adapto-env.md` — переменные окружения и `.env.local`
+
+---
+
+### Конец глобального промпта
+
+> Любой код, нарушающий этот документ, должен быть автоматически исправлен/перегенерирован. Если правило мешает решению задачи — добавь комментарий **TODO:\[reason]** и предложи безопасный компромисс в рамках FSD.

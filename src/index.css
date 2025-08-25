@@ -1,0 +1,645 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Modern Design System - Новая гармоничная палитра */
+@layer base {
+  :root {
+    /* Tabbar height - динамически обновляется через JS */
+    --tabbar-h: 64px;
+    
+    /* Fonts */
+    --font-display: 'Unbounded', sans-serif;
+    --font-sans: 'Manrope', sans-serif;
+    
+    /* Brand Colors - современная синяя палитра */
+    --brand: 221 83% 53%; /* #3B82F6 Modern blue */
+    --brand-50: 221 83% 90%; /* #DBEAFE Light blue */
+    --brand-100: 221 83% 80%; /* #BFDBFE */
+    --brand-200: 221 83% 70%; /* #93C5FD */
+    --brand-300: 221 83% 60%; /* #60A5FA */
+    --brand-400: 221 83% 53%; /* #3B82F6 */
+    --brand-500: 221 83% 53%; /* #3B82F6 */
+    --brand-600: 221 83% 45%; /* #2563EB */
+    --brand-700: 221 83% 37%; /* #1D4ED8 */
+    --brand-800: 221 83% 29%; /* #1E40AF */
+    --brand-900: 221 83% 21%; /* #1E3A8A */
+    
+    /* Accent Colors - теплые акценты */
+    --accent: 25 95% 53%; /* #F97316 Warm orange */
+    --accent-50: 25 95% 90%; /* #FEF3C7 */
+    --accent-100: 25 95% 80%; /* #FED7AA */
+    --accent-200: 25 95% 70%; /* #FDBA74 */
+    --accent-300: 25 95% 60%; /* #FB923C */
+    --accent-400: 25 95% 53%; /* #F97316 */
+    --accent-500: 25 95% 53%; /* #F97316 */
+    --accent-600: 25 95% 45%; /* #EA580C */
+    --accent-700: 25 95% 37%; /* #C2410C */
+    --accent-800: 25 95% 29%; /* #9A3412 */
+    --accent-900: 25 95% 21%; /* #7C2D12 */
+    
+    /* Base Colors - современные нейтральные */
+    --bg: 0 0% 100%; /* #FFFFFF Pure white */
+    --surface: 220 14% 96%; /* #F8FAFC Very light gray */
+    --surface-50: 220 14% 98%; /* #FCFCFD */
+    --surface-100: 220 14% 96%; /* #F8FAFC */
+    --surface-200: 220 14% 91%; /* #F1F5F9 */
+    --surface-300: 220 14% 84%; /* #E2E8F0 */
+    --surface-400: 220 14% 75%; /* #CBD5E1 */
+    --surface-500: 220 14% 64%; /* #94A3B8 */
+    --surface-600: 220 14% 52%; /* #64748B */
+    --surface-700: 220 14% 40%; /* #475569 */
+    --surface-800: 220 14% 28%; /* #334155 */
+    --surface-900: 220 14% 16%; /* #1E293B */
+    
+    /* Text Colors - оптимизированные для контраста */
+    --ink: 222 84% 5%; /* #0F172A Deep slate */
+    --muted: 220 14% 46%; /* #64748B Medium gray */
+    --muted-20: 220 14% 95%; /* #F8FAFC Very light gray */
+    --muted-50: 220 14% 90%; /* #F1F5F9 */
+    --muted-100: 220 14% 84%; /* #E2E8F0 */
+    --muted-200: 220 14% 75%; /* #CBD5E1 */
+    --muted-300: 220 14% 64%; /* #94A3B8 */
+    --muted-400: 220 14% 52%; /* #64748B */
+    --muted-500: 220 14% 46%; /* #64748B */
+    --muted-600: 220 14% 40%; /* #475569 */
+    --muted-700: 220 14% 28%; /* #334155 */
+    --muted-800: 220 14% 16%; /* #1E293B */
+    --muted-900: 220 14% 5%; /* #0F172A */
+    
+    /* Status Colors - современные и доступные */
+    --success: 142 76% 36%; /* #16A34A Green */
+    --success-50: 142 76% 90%; /* #DCFCE7 */
+    --success-100: 142 76% 80%; /* #BBF7D0 */
+    --success-200: 142 76% 70%; /* #86EFAC */
+    --success-300: 142 76% 60%; /* #4ADE80 */
+    --success-400: 142 76% 50%; /* #22C55E */
+    --success-500: 142 76% 36%; /* #16A34A */
+    --success-600: 142 76% 30%; /* #15803D */
+    --success-700: 142 76% 24%; /* #166534 */
+    --success-800: 142 76% 18%; /* #14532D */
+    --success-900: 142 76% 12%; /* #052E16 */
+    
+    --warning: 38 92% 50%; /* #F59E0B Amber */
+    --warning-50: 38 92% 90%; /* #FEF3C7 */
+    --warning-100: 38 92% 80%; /* #FDE68A */
+    --warning-200: 38 92% 70%; /* #FCD34D */
+    --warning-300: 38 92% 60%; /* #FBBF24 */
+    --warning-400: 38 92% 50%; /* #F59E0B */
+    --warning-500: 38 92% 50%; /* #F59E0B */
+    --warning-600: 38 92% 42%; /* #D97706 */
+    --warning-700: 38 92% 34%; /* #B45309 */
+    --warning-800: 38 92% 26%; /* #92400E */
+    --warning-900: 38 92% 18%; /* #78350F */
+    
+    --danger: 0 84% 60%; /* #EF4444 Red */
+    --danger-50: 0 84% 90%; /* #FEF2F2 */
+    --danger-100: 0 84% 80%; /* #FEE2E2 */
+    --danger-200: 0 84% 70%; /* #FECACA */
+    --danger-300: 0 84% 60%; /* #FCA5A5 */
+    --danger-400: 0 84% 50%; /* #F87171 */
+    --danger-500: 0 84% 60%; /* #EF4444 */
+    --danger-600: 0 84% 52%; /* #DC2626 */
+    --danger-700: 0 84% 44%; /* #B91C1C */
+    --danger-800: 0 84% 36%; /* #991B1B */
+    --danger-900: 0 84% 28%; /* #7F1D1D */
+    
+    /* Semantic tokens */
+    --background: var(--bg);
+    --foreground: var(--ink);
+    --card: var(--surface);
+    --card-foreground: var(--ink);
+    --popover: var(--surface);
+    --popover-foreground: var(--ink);
+    --primary: var(--brand);
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    --secondary: var(--surface-100);
+    --secondary-foreground: var(--ink);
+    --accent-color: var(--accent);
+    --accent-foreground: 0 0% 100%; /* #FFFFFF */
+    --destructive: var(--danger);
+    --destructive-foreground: 0 0% 100%; /* #FFFFFF */
+    --border: var(--surface-200);
+    --input: var(--surface);
+    --ring: var(--brand);
+    --muted-bg: var(--surface-50);
+    --muted-foreground: var(--muted);
+
+    /* Text color tokens */
+    --text-ink: var(--ink);
+    --text-muted: var(--muted);
+    --text-accent: var(--accent);
+    --text-brand: var(--brand);
+    
+    /* Design tokens */
+    --radius: 1.5rem; /* 24px for cards */
+    --radius-pill: 9999px;
+    --spacing-xs: 0.5rem; /* 8px */
+    --spacing-sm: 0.75rem; /* 12px */
+    --spacing-md: 1rem; /* 16px */
+    --spacing-lg: 1.5rem; /* 24px */
+    
+    /* Shadows - современные и мягкие */
+    --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-neon: 0 0 20px rgba(59, 130, 246, 0.15);
+    --shadow-accent: 0 0 20px rgba(249, 115, 22, 0.15);
+    
+    /* Motion */
+    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark, [data-theme="dark"] {
+    /* Brand Colors for dark - более мягкие и читаемые тона */
+    --brand: 221 83% 65%; /* #7DD3FC Более светлый и мягкий синий */
+    --brand-50: 221 83% 12%; /* #0C4A6E Темно-синий фон */
+    --brand-100: 221 83% 16%; /* #075985 */
+    --brand-200: 221 83% 20%; /* #0C4A6E */
+    --brand-300: 221 83% 25%; /* #0369A1 */
+    --brand-400: 221 83% 30%; /* #0284C7 */
+    --brand-500: 221 83% 35%; /* #0EA5E9 */
+    --brand-600: 221 83% 40%; /* #38BDF8 */
+    --brand-700: 221 83% 45%; /* #7DD3FC */
+    --brand-800: 221 83% 50%; /* #BAE6FD */
+    --brand-900: 221 83% 55%; /* #E0F2FE */
+    
+    /* Accent Colors for dark - более мягкие оранжевые */
+    --accent: 25 95% 65%; /* #FDBA74 Мягкий оранжевый */
+    --accent-50: 25 95% 12%; /* #451A03 Темно-оранжевый фон */
+    --accent-100: 25 95% 16%; /* #5D2806 */
+    --accent-200: 25 95% 20%; /* #7C2D12 */
+    --accent-300: 25 95% 25%; /* #9A3412 */
+    --accent-400: 25 95% 30%; /* #C2410C */
+    --accent-500: 25 95% 35%; /* #EA580C */
+    --accent-600: 25 95% 40%; /* #F97316 */
+    --accent-700: 25 95% 45%; /* #FB923C */
+    --accent-800: 25 95% 50%; /* #FDBA74 */
+    --accent-900: 25 95% 55%; /* #FED7AA */
+    
+    /* Base Colors for dark - более мягкие и современные */
+    --bg: 222 84% 4%; /* #020617 Очень темный фон */
+    --surface: 222 84% 7%; /* #0F172A Поверхности */
+    --surface-50: 222 84% 5%; /* #020617 */
+    --surface-100: 222 84% 7%; /* #0F172A */
+    --surface-200: 222 84% 10%; /* #1E293B */
+    --surface-300: 222 84% 14%; /* #334155 */
+    --surface-400: 222 84% 20%; /* #475569 */
+    --surface-500: 222 84% 28%; /* #64748B */
+    --surface-600: 222 84% 36%; /* #94A3B8 */
+    --surface-700: 222 84% 44%; /* #CBD5E1 */
+    --surface-800: 222 84% 52%; /* #E2E8F0 */
+    --surface-900: 222 84% 60%; /* #F1F5F9 */
+    
+    /* Text Colors for dark - улучшенный контраст */
+    --ink: 220 14% 98%; /* #FCFCFD Почти белый для основного текста */
+    --muted: 220 14% 70%; /* #CBD5E1 Более светлый для лучшей читаемости */
+    --muted-50: 220 14% 70%; /* #CBD5E1 */
+    --muted-100: 220 14% 62%; /* #E2E8F0 */
+    --muted-200: 220 14% 54%; /* #CBD5E1 */
+    --muted-300: 220 14% 46%; /* #94A3B8 */
+    --muted-400: 220 14% 38%; /* #64748B */
+    --muted-500: 220 14% 30%; /* #475569 */
+    --muted-600: 220 14% 22%; /* #334155 */
+    --muted-700: 220 14% 14%; /* #1E293B */
+    --muted-800: 220 14% 10%; /* #0F172A */
+    --muted-900: 220 14% 6%; /* #020617 */
+    
+    /* Status Colors for dark - более мягкие и читаемые */
+    --success: 142 76% 50%; /* #4ADE80 Более светлый зеленый */
+    --success-50: 142 76% 12%; /* #052E16 Темно-зеленый фон */
+    --success-100: 142 76% 16%; /* #14532D */
+    --success-200: 142 76% 20%; /* #166534 */
+    --success-300: 142 76% 25%; /* #15803D */
+    --success-400: 142 76% 30%; /* #16A34A */
+    --success-500: 142 76% 35%; /* #22C55E */
+    --success-600: 142 76% 40%; /* #4ADE80 */
+    --success-700: 142 76% 45%; /* #86EFAC */
+    --success-800: 142 76% 50%; /* #BBF7D0 */
+    --success-900: 142 76% 55%; /* #DCFCE7 */
+    
+    --warning: 38 92% 60%; /* #FCD34D Более светлый янтарь */
+    --warning-50: 38 92% 12%; /* #451A03 Темно-янтарный фон */
+    --warning-100: 38 92% 16%; /* #5D2806 */
+    --warning-200: 38 92% 20%; /* #7C2D12 */
+    --warning-300: 38 92% 25%; /* #9A3412 */
+    --warning-400: 38 92% 30%; /* #C2410C */
+    --warning-500: 38 92% 35%; /* #EA580C */
+    --warning-600: 38 92% 40%; /* #F59E0B */
+    --warning-700: 38 92% 45%; /* #FBBF24 */
+    --warning-800: 38 92% 50%; /* #FCD34D */
+    --warning-900: 38 92% 55%; /* #FDE68A */
+    
+    --danger: 0 84% 70%; /* #FCA5A5 Более светлый красный */
+    --danger-50: 0 84% 12%; /* #450A0A Темно-красный фон */
+    --danger-100: 0 84% 16%; /* #7F1D1D */
+    --danger-200: 0 84% 20%; /* #991B1B */
+    --danger-300: 0 84% 25%; /* #B91C1C */
+    --danger-400: 0 84% 30%; /* #DC2626 */
+    --danger-500: 0 84% 35%; /* #EF4444 */
+    --danger-600: 0 84% 40%; /* #F87171 */
+    --danger-700: 0 84% 45%; /* #FCA5A5 */
+    --danger-800: 0 84% 50%; /* #FECACA */
+    --danger-900: 0 84% 55%; /* #FEE2E2 */
+    
+    /* Update semantic tokens */
+    --background: var(--bg);
+    --foreground: var(--ink);
+    --card: var(--surface);
+    --card-foreground: var(--ink);
+    --popover: var(--surface);
+    --popover-foreground: var(--ink);
+    --primary: var(--brand);
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    --secondary: var(--surface-100);
+    --secondary-foreground: var(--ink);
+    --accent-color: var(--accent);
+    --accent-foreground: 0 0% 100%; /* #FFFFFF */
+    --destructive: var(--danger);
+    --destructive-foreground: 0 0% 100%; /* #FFFFFF */
+    --border: var(--surface-200);
+    --input: var(--surface);
+    --ring: var(--brand);
+    --muted-bg: var(--surface-50);
+    --muted-foreground: var(--muted);
+
+    /* Text color tokens for dark theme */
+    --text-ink: var(--ink);
+    --text-muted: var(--muted);
+    --text-accent: var(--accent);
+    --text-brand: var(--brand);
+    
+    /* Enhanced shadows for dark theme - более мягкие */
+    --shadow-neon: 0 0 25px rgba(125, 211, 252, 0.25);
+    --shadow-neon-dark: 0 0 25px rgba(125, 211, 252, 0.25);
+    --shadow-accent: 0 0 25px rgba(253, 186, 116, 0.25);
+  }
+}
+
+@layer base {
+  /* Базовые стили - минимальные для контраста */
+  html, body {
+    color: var(--ink);
+    background: var(--bg);
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Только заголовки получают принудительный цвет */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--ink);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background font-sans;
+    font-family: var(--font-sans);
+  }
+  
+  /* Улучшенные стили для темной темы */
+  .dark, [data-theme="dark"] {
+    /* Улучшенная читабельность текста */
+    color-scheme: dark;
+    
+    /* Более мягкие переходы между элементами */
+    --border-opacity: 0.3;
+    
+    /* Улучшенные тени для карточек */
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --card-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Специальные стили для темной темы */
+  .dark input,
+  .dark textarea,
+  .dark select {
+    background-color: hsl(var(--surface));
+    border-color: hsl(var(--border));
+    color: hsl(var(--ink));
+  }
+  
+  .dark input:focus,
+  .dark textarea:focus,
+  .dark select:focus {
+    border-color: hsl(var(--brand));
+    box-shadow: 0 0 0 2px hsl(var(--brand) / 0.2);
+  }
+  
+  .dark button {
+    transition: all 0.2s ease;
+  }
+  
+  .dark button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Дополнительные правила для текста в темной теме */
+  .dark h1,
+  .dark h2,
+  .dark h3,
+  .dark h4,
+  .dark h5,
+  .dark h6,
+  .dark p,
+  .dark span,
+  .dark div,
+  .dark label {
+    color: hsl(var(--ink)) !important;
+  }
+  
+  .dark .text-muted,
+  .dark .text-muted-foreground {
+    color: hsl(var(--muted)) !important;
+  }
+  
+  .dark .text-brand {
+    color: hsl(var(--brand)) !important;
+  }
+  
+  .dark .text-accent {
+    color: hsl(var(--accent)) !important;
+  }
+  
+  /* SVG элементы в темной теме */
+  .dark svg {
+    color: inherit;
+  }
+  
+  .dark svg[stroke] {
+    stroke: currentColor;
+  }
+  
+  .dark svg[fill] {
+    fill: currentColor;
+  }
+  
+  /* Исключения для иконок навигации - чтобы они не становились сплошными */
+  .dark nav svg,
+  .dark [role="tablist"] svg,
+  .dark .bottom-nav svg {
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+  
+  /* Специально для иконок lucide-react в навигации */
+  .dark nav [data-lucide],
+  .dark [role="tablist"] [data-lucide],
+  .dark .bottom-nav [data-lucide] {
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+
+  /* Предотвращение микро-скролла */
+  .overflow-hidden {
+    overflow: hidden !important;
+  }
+
+  /* Улучшение скролла на мобильных */
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Фиксированные элементы */
+  .fixed {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+  
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-md {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .shadow-lg {
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .shadow-xl {
+    box-shadow: var(--shadow-xl);
+  }
+  
+  .shadow-neon {
+    box-shadow: var(--shadow-neon);
+  }
+  
+  .shadow-neon-dark {
+    box-shadow: var(--shadow-neon-dark);
+  }
+  
+  .shadow-accent {
+    box-shadow: var(--shadow-accent);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-medium {
+    transition: var(--transition-medium);
+  }
+  
+  .transition-slow {
+    transition: var(--transition-slow);
+  }
+
+  .glass {
+    backdrop-filter: blur(16px);
+    background: hsl(var(--surface) / 0.8);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  .glass-dark {
+    backdrop-filter: blur(16px);
+    background: hsl(var(--surface) / 0.85);
+    border: 1px solid hsl(var(--border) / 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Специальный класс для заголовков с минимальной тенью */
+  .header-glass {
+    backdrop-filter: blur(16px);
+    background: hsl(var(--surface) / 0.9);
+    border: 1px solid hsl(var(--border) / 0.3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Новые утилиты для градиентов */
+  .gradient-brand {
+    background: linear-gradient(135deg, hsl(var(--brand)) 0%, hsl(var(--brand-400)) 100%);
+  }
+  
+  .gradient-accent {
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-400)) 100%);
+  }
+  
+  .gradient-surface {
+    background: linear-gradient(135deg, hsl(var(--surface)) 0%, hsl(var(--surface-100)) 100%);
+  }
+  
+  /* Улучшенные утилиты для темной темы */
+  .gradient-brand-dark {
+    background: linear-gradient(135deg, hsl(var(--brand)) 0%, hsl(var(--brand-600)) 100%);
+  }
+  
+  .gradient-accent-dark {
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-600)) 100%);
+  }
+  
+  .gradient-surface-dark {
+    background: linear-gradient(135deg, hsl(var(--surface)) 0%, hsl(var(--surface-200)) 100%);
+  }
+  
+  /* Мягкие тени для темной темы */
+  .shadow-soft-dark {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .shadow-md-dark {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  
+  .shadow-lg-dark {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Стили для range input (слайдеров) */
+@layer components {
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-track {
+    width: 100%;
+    height: 8px;
+    background: hsl(var(--brand-50));
+    border-radius: 4px;
+    border: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: hsl(var(--brand));
+    cursor: pointer;
+    border: 2px solid hsl(var(--bg));
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(0.95);
+  }
+
+  /* Firefox */
+  input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: hsl(var(--brand-50));
+    border-radius: 4px;
+    border: none;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: hsl(var(--brand));
+    cursor: pointer;
+    border: 2px solid hsl(var(--bg));
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+  }
+
+  input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  input[type="range"]::-moz-range-thumb:active {
+    transform: scale(0.95);
+  }
+
+  /* Edge */
+  input[type="range"]::-ms-track {
+    width: 100%;
+    height: 8px;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+
+  input[type="range"]::-ms-fill-lower {
+    background: hsl(var(--brand-50));
+    border-radius: 4px;
+  }
+
+  input[type="range"]::-ms-fill-upper {
+    background: hsl(var(--brand-50));
+    border-radius: 4px;
+  }
+
+  input[type="range"]::-ms-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: hsl(var(--brand));
+    cursor: pointer;
+    border: 2px solid hsl(var(--bg));
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Стили для скрытия скроллбара */
+@layer utilities {
+  .scrollbar-hide {
+    /* Firefox */
+    scrollbar-width: none;
+    /* IE and Edge */
+    -ms-overflow-style: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Плавный скролл для чата */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+}

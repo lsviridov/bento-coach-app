@@ -1,0 +1,117 @@
+/* Избирательные стили для гарантии контраста - только для критичных случаев */
+
+/* Базовые цвета для основных текстовых элементов - только когда нужно */
+.text-ink,
+.text-foreground {
+  color: var(--ink);
+}
+
+/* Muted текст - только для критичных случаев */
+.text-muted,
+.text-muted-foreground {
+  color: var(--muted);
+}
+
+/* Brand и accent цвета - оставляем как есть для красоты */
+.text-brand {
+  color: var(--brand);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+/* Success, warning, danger - оставляем как есть */
+.text-success {
+  color: var(--success);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-danger {
+  color: var(--danger);
+}
+
+/* Фоны карточек - оставляем как есть */
+.bg-surface {
+  background-color: var(--surface);
+}
+
+.bg-card {
+  background-color: var(--card);
+}
+
+/* Бейджи - только для критичных случаев контраста */
+.bg-brand-50 .text-ink,
+.bg-accent\/15 .text-ink,
+.bg-success\/15 .text-ink,
+.bg-warning\/15 .text-ink,
+.bg-danger\/15 .text-ink {
+  color: var(--ink);
+}
+
+/* Иконки наследуют цвет от родителя */
+svg[class*="text-"] {
+  color: inherit;
+}
+
+/* SVG элементы в темной теме */
+.dark svg {
+  color: inherit;
+}
+
+.dark svg[stroke] {
+  stroke: currentColor;
+}
+
+.dark svg[fill] {
+  fill: currentColor;
+}
+
+/* Исключения для иконок навигации - чтобы они не становились сплошными */
+.dark nav svg,
+.dark [role="tablist"] svg,
+.dark .bottom-nav svg {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+/* Специально для иконок lucide-react в навигации */
+.dark nav [data-lucide],
+.dark [role="tablist"] [data-lucide],
+.dark .bottom-nav [data-lucide] {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+/* Дополнительные правила для темной темы */
+.dark .text-foreground,
+.dark .text-ink {
+  color: hsl(var(--ink)) !important;
+}
+
+.dark .text-muted,
+.dark .text-muted-foreground {
+  color: hsl(var(--muted)) !important;
+}
+
+.dark .text-brand {
+  color: hsl(var(--brand)) !important;
+}
+
+.dark .text-accent {
+  color: hsl(var(--accent)) !important;
+}
+
+/* Убираем принудительные стили для всех элементов - только для критичных */
+/* h1, h2, h3, h4, h5, h6, p, span, div, label {
+  color: var(--ink) !important;
+} */
+
+/* Исключения для muted текста - только когда нужно */
+/* .text-muted,
+[class*="text-muted"] {
+  color: var(--muted) !important;
+} */
