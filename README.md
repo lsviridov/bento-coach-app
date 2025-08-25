@@ -33,8 +33,8 @@ AI-powered nutrition coaching PWA built with React, Vite, and modern web technol
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/lsviridov/bento-coach.git
-cd bento-coach
+git clone https://github.com/lsviridov/bento-coach-app.git
+cd bento-coach-app
 ```
 
 2. Install dependencies:
