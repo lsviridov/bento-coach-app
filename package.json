@@ -12,7 +12,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "update-images": "node scripts/update-product-images.cjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

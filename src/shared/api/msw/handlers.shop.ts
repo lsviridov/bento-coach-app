@@ -1,8 +1,8 @@
 import { http, HttpResponse } from 'msw';
-import { Product, ProductListQuery, CartItem } from '@/entities/product';
+import { ProductT, ProductListQueryT, CartItemT } from '@/entities/product';
 
 // Каталог продуктов с реальными данными из adaptogenzz.by
-const catalog: Product[] = [
+const catalog: ProductT[] = [
   // Пептидные гидролизаты
   {
     id: '550e8400-e29b-41d4-a716-446655440001',
@@ -10,7 +10,7 @@ const catalog: Product[] = [
     title: 'Пептидный гидролизат куриного белка',
     category: 'peptides',
     price_byn: 96,
-    image_url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop',
+    image_url: '/images/products/peptides/peptides-peptide-chicken-400x400.jpg',
     tags: ['белок', 'восстановление', 'мышечная масса'],
     description: 'Высококачественный гидролизат куриного белка для восстановления и роста мышечной массы'
   },
@@ -20,7 +20,7 @@ const catalog: Product[] = [
     title: 'Пептидный гидролизат рыбного белка',
     category: 'peptides',
     price_byn: 128,
-    image_url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=400&fit=crop',
+    image_url: '/images/products/peptides/peptides-peptide-fish-400x400.jpg',
     tags: ['белок', 'лёгкость', 'омега-3'],
     description: 'Легкоусвояемый рыбный белок с высоким содержанием омега-3 жирных кислот'
   },
@@ -30,7 +30,7 @@ const catalog: Product[] = [
     title: 'Пептидный гидролизат говяжьего белка',
     category: 'peptides',
     price_byn: 189,
-    image_url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=400&fit=crop',
+    image_url: '/images/products/peptides/peptides-peptide-beef-400x400.jpg',
     tags: ['белок', 'силы', 'выносливость'],
     description: 'Мощный говяжий белок для увеличения силы и выносливости'
   },
@@ -40,7 +40,7 @@ const catalog: Product[] = [
     title: 'Пептидный гидролизат белка ската',
     category: 'peptides',
     price_byn: 402,
-    image_url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=400&fit=crop',
+    image_url: '/images/products/peptides/peptides-peptide-skate-400x400.jpg',
     tags: ['премиум', 'эксклюзив', 'восстановление'],
     description: 'Эксклюзивный гидролизат белка ската для максимального восстановления'
   },
@@ -52,7 +52,7 @@ const catalog: Product[] = [
     title: 'Антипаразитарный комплекс',
     category: 'supplements',
     price_byn: 53,
-    image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop',
+    image_url: '/images/products/supplements/supplements-antiparasitic-400x400.jpg',
     tags: ['антипаразитарный', 'детокс', 'иммунитет'],
     description: 'Натуральный комплекс для очищения организма от паразитов'
   },
@@ -62,7 +62,7 @@ const catalog: Product[] = [
     title: 'Кальцемарин',
     category: 'supplements',
     price_byn: 55,
-    image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop',
+    image_url: '/images/products/supplements/supplements-calcemarin-400x400.jpg',
     tags: ['кости', 'кальций', 'минералы'],
     description: 'Комплекс кальция и минералов для укрепления костной ткани'
   },
@@ -72,7 +72,7 @@ const catalog: Product[] = [
     title: 'Нуклеамин',
     category: 'supplements',
     price_byn: 100,
-    image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop',
+    image_url: '/images/products/supplements/supplements-nucleamin-400x400.jpg',
     tags: ['восстановление', 'ДНК/РНК', 'клеточное здоровье'],
     description: 'Инновационный комплекс для восстановления ДНК/РНК и клеточного здоровья'
   },
@@ -82,7 +82,7 @@ const catalog: Product[] = [
     title: 'Ресвератрол',
     category: 'supplements',
     price_byn: 66,
-    image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop',
+    image_url: '/images/products/supplements/supplements-resveratrol-400x400.jpg',
     tags: ['антиоксидант', 'долголетие', 'сердечно-сосудистая система'],
     description: 'Мощный антиоксидант для поддержания здоровья и долголетия'
   },
@@ -92,17 +92,17 @@ const catalog: Product[] = [
     title: 'Коллоидное серебро ARGENIX',
     category: 'supplements',
     price_byn: 95,
-    image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop',
+    image_url: '/images/products/supplements/supplements-argenix-400x400.jpg',
     tags: ['иммунитет', 'антибактериальный', 'защита'],
     description: 'Коллоидное серебро для укрепления иммунитета и защиты от бактерий'
   }
 ];
 
 // Корзина пользователя (в памяти для демо)
-let userCart: CartItem[] = [];
+let userCart: CartItemT[] = [];
 
 // Функция фильтрации продуктов
-function filterProducts(query: ProductListQuery) {
+function filterProducts(query: ProductListQueryT) {
   let filtered = [...catalog];
 
   // Поиск по тексту
@@ -158,13 +158,13 @@ export const shopHandlers = [
     const url = new URL(request.url);
     const query = {
       q: url.searchParams.get('q') || undefined,
-      category: url.searchParams.getAll('category'),
+      category: url.searchParams.getAll('category') as ("peptides" | "supplements")[],
       goals: url.searchParams.getAll('goals'),
       priceMin: url.searchParams.get('priceMin') ? Number(url.searchParams.get('priceMin')) : undefined,
       priceMax: url.searchParams.get('priceMax') ? Number(url.searchParams.get('priceMax')) : undefined,
       cursor: url.searchParams.get('cursor') || undefined,
       limit: Number(url.searchParams.get('limit')) || 20,
-      sort: (url.searchParams.get('sort') as any) || 'popular'
+      sort: (url.searchParams.get('sort') as "popular" | "priceAsc" | "priceDesc") || 'popular'
     };
 
     const filtered = filterProducts(query);
@@ -202,7 +202,7 @@ export const shopHandlers = [
 
   // POST /api/cart/items - добавить в корзину
   http.post('/api/cart/items', async ({ request }) => {
-    const body = await request.json();
+    const body = await request.json() as { product_id: string; qty: number; price_byn: number };
     const { product_id, qty, price_byn } = body;
 
     // Проверяем существующий товар в корзине
@@ -225,7 +225,7 @@ export const shopHandlers = [
   // PUT /api/cart/items/:productId - обновить количество
   http.put('/api/cart/items/:productId', async ({ params, request }) => {
     const { productId } = params;
-    const { qty } = await request.json();
+    const { qty } = await request.json() as { qty: number };
     
     const itemIndex = userCart.findIndex(item => item.product_id === productId);
     

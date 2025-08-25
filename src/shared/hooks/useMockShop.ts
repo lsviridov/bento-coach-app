@@ -30,7 +30,7 @@ const mockProducts: ProductT[] = [
     title: 'Пептидный гидролизат говяжьего белка',
     category: 'peptides',
     price_byn: 189,
-    image_url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=400&fit=crop',
+    image_url: 'image_url: '/images/products/peptides/peptides-peptide-beef-400x400.jpg'',
     tags: ['белок', 'силы', 'выносливость'],
     description: 'Мощный говяжий белок для увеличения силы и выносливости'
   },
@@ -72,7 +72,7 @@ const mockProducts: ProductT[] = [
     title: 'Нуклеамин',
     category: 'supplements',
     price_byn: 100,
-    image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop',
+    image_url: 'image_url: '/images/products/supplements/supplements-nucleamin-400x400.jpg'',
     tags: ['восстановление', 'ДНК/РНК', 'клеточное здоровье'],
     description: 'Инновационный комплекс для восстановления ДНК/РНК и клеточного здоровья'
   },
