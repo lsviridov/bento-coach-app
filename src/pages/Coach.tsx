@@ -63,7 +63,7 @@ export default function Coach() {
 
   // Отладочная информация
   useEffect(() => {
-    console.log('Tabbar height debug:', { tabbarH, cssTabbarH, bottomPad, composerH });
+    console.log('Tabbar height debug:', { tabbarH, cssTabbarH, bottomPad, composerH, kb });
     console.log('CSS var --tabbar-h:', getComputedStyle(document.documentElement).getPropertyValue('--tabbar-h'));
     
     // Проверяем позиционирование композера
@@ -74,7 +74,8 @@ export default function Coach() {
         top: rect.top,
         height: rect.height,
         zIndex: getComputedStyle(composerRef.current).zIndex,
-        computedBottom: getComputedStyle(composerRef.current).bottom
+        computedBottom: getComputedStyle(composerRef.current).bottom,
+        transform: getComputedStyle(composerRef.current).transform
       });
     }
     
@@ -97,7 +98,8 @@ export default function Coach() {
     // Проверяем размеры экрана
     console.log('Viewport height:', window.innerHeight);
     console.log('Document height:', document.documentElement.scrollHeight);
-  }, [tabbarH, cssTabbarH, bottomPad, composerH]);
+    console.log('Keyboard insets:', kb);
+  }, [tabbarH, cssTabbarH, bottomPad, composerH, kb]);
 
   useEffect(() => {
     // Если есть сессии, берём первую активную
@@ -145,8 +147,8 @@ export default function Coach() {
         ref={composerRef}
         className="fixed left-0 right-0 z-[60] border-t bg-[var(--surface)]/85 backdrop-blur-md"
         style={{
-          top: `calc(100vh - ${tabbarHeight + composerH + 8}px)`, // позиционируем от верха экрана
-          transform: `translateY(-${kb}px)`
+          bottom: `${tabbarHeight}px`, // композер НАД таббаром
+          transform: kb > 0 ? `translateY(-${kb}px)` : 'none' // применяем transform только когда клавиатура открыта
         }}
       >
         <Composer 
