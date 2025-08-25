@@ -10,7 +10,7 @@ const mockProducts: ProductT[] = [
     title: 'Пептидный гидролизат куриного белка',
     category: 'peptides',
     price_byn: 96,
-    image_url: undefined, // Убираем изображение чтобы показать SVG иконку
+    image_url: '/images/products/peptides/peptides-peptide-chicken-400x400.jpg',
     tags: ['белок', 'восстановление', 'мышечная масса'],
     description: 'Высококачественный гидролизат куриного белка для восстановления и роста мышечной массы'
   },
@@ -20,7 +20,7 @@ const mockProducts: ProductT[] = [
     title: 'Пептидный гидролизат рыбного белка',
     category: 'peptides',
     price_byn: 128,
-    image_url: undefined, // Убираем изображение чтобы показать SVG иконку
+    image_url: '/images/products/peptides/peptides-peptide-fish-400x400.jpg',
     tags: ['белок', 'лёгкость', 'омега-3'],
     description: 'Легкоусвояемый рыбный белок с высоким содержанием омега-3 жирных кислот'
   },
@@ -30,7 +30,7 @@ const mockProducts: ProductT[] = [
     title: 'Пептидный гидролизат говяжьего белка',
     category: 'peptides',
     price_byn: 189,
-    image_url: 'image_url: '/images/products/peptides/peptides-peptide-beef-400x400.jpg'',
+    image_url: '/images/products/peptides/peptides-peptide-beef-400x400.jpg',
     tags: ['белок', 'силы', 'выносливость'],
     description: 'Мощный говяжий белок для увеличения силы и выносливости'
   },
@@ -40,7 +40,7 @@ const mockProducts: ProductT[] = [
     title: 'Пептидный гидролизат белка ската',
     category: 'peptides',
     price_byn: 402,
-    image_url: undefined, // Убираем изображение чтобы показать SVG иконку
+    image_url: '/images/products/peptides/peptides-peptide-skate-400x400.jpg',
     tags: ['премиум', 'эксклюзив', 'восстановление'],
     description: 'Эксклюзивный гидролизат белка ската для максимального восстановления'
   },
@@ -52,7 +52,7 @@ const mockProducts: ProductT[] = [
     title: 'Антипаразитарный комплекс',
     category: 'supplements',
     price_byn: 53,
-    image_url: undefined, // Убираем изображение чтобы показать SVG иконку
+    image_url: '/images/products/supplements/supplements-antiparasitic-400x400.jpg',
     tags: ['антипаразитарный', 'детокс', 'иммунитет'],
     description: 'Натуральный комплекс для очищения организма от паразитов'
   },
@@ -62,7 +62,7 @@ const mockProducts: ProductT[] = [
     title: 'Кальцемарин',
     category: 'supplements',
     price_byn: 55,
-    image_url: undefined, // Убираем изображение чтобы показать SVG иконку
+    image_url: '/images/products/supplements/supplements-calcemarin-400x400.jpg',
     tags: ['кости', 'кальций', 'минералы'],
     description: 'Комплекс кальция и минералов для укрепления костной ткани'
   },
@@ -72,7 +72,7 @@ const mockProducts: ProductT[] = [
     title: 'Нуклеамин',
     category: 'supplements',
     price_byn: 100,
-    image_url: 'image_url: '/images/products/supplements/supplements-nucleamin-400x400.jpg'',
+    image_url: '/images/products/supplements/supplements-nucleamin-400x400.jpg',
     tags: ['восстановление', 'ДНК/РНК', 'клеточное здоровье'],
     description: 'Инновационный комплекс для восстановления ДНК/РНК и клеточного здоровья'
   },
@@ -82,7 +82,7 @@ const mockProducts: ProductT[] = [
     title: 'Ресвератрол',
     category: 'supplements',
     price_byn: 66,
-    image_url: undefined, // Убираем изображение чтобы показать SVG иконку
+    image_url: '/images/products/supplements/supplements-resveratrol-400x400.jpg',
     tags: ['антиоксидант', 'долголетие', 'сердечно-сосудистая система'],
     description: 'Мощный антиоксидант для поддержания здоровья и долголетия'
   },
@@ -92,7 +92,7 @@ const mockProducts: ProductT[] = [
     title: 'Коллоидное серебро ARGENIX',
     category: 'supplements',
     price_byn: 95,
-    image_url: undefined, // Убираем изображение чтобы показать SVG иконку
+    image_url: '/images/products/supplements/supplements-argenix-400x400.jpg',
     tags: ['иммунитет', 'антибактериальный', 'защита'],
     description: 'Коллоидное серебро для укрепления иммунитета и защиты от бактерий'
   }
