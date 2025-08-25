@@ -31,11 +31,12 @@ export default function BottomNav({ items, activeKey, onChange }: BottomNavProps
       className={cn(
         "w-full bottom-nav",
         "glass-dark border-t border-surface-200 dark:border-surface-700",
+        "pb-[calc(env(safe-area-inset-bottom))]", // safe-area
         "backdrop-blur-lg"
       )}
     >
       <div className="mx-auto w-full max-w-md px-2">
-        <ul className="flex items-center justify-around h-20 pt-2">
+        <ul className="flex items-center justify-around h-20 pt-2 -mt-2">
           {items.map((item, index) => {
             const isActive = item.key === current;
             const isLeftTab = index < 2; // Главная, Камера
