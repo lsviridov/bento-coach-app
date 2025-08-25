@@ -145,9 +145,9 @@ export default function Coach() {
     return (
       <div
         ref={composerRef}
-        className="fixed left-0 right-0 z-[60] border-t bg-[var(--surface)]/85 backdrop-blur-md"
+        className="fixed left-0 right-0 z-40 border-t bg-[var(--surface)]/85 backdrop-blur-md"
         style={{
-          bottom: `${tabbarHeight}px`, // композер НАД таббаром
+          bottom: `${tabbarHeight + 20}px`, // композер ВЫШЕ таббара с большим отступом
           transform: kb > 0 ? `translateY(-${kb}px)` : 'none' // применяем transform только когда клавиатура открыта
         }}
       >
@@ -250,13 +250,13 @@ export default function Coach() {
         )}
       </div>
       
-      {/* Composer - рендерим ПЕРЕД таббаром */}
-      {renderComposer()}
-      
       {/* Bottom Navigation */}
       <div id="app-tabbar" className="fixed inset-x-0 bottom-0 z-50">
         <BottomNav items={navigationItems} />
       </div>
+      
+      {/* Composer - рендерим ПОСЛЕ таббара */}
+      {renderComposer()}
     </div>
   );
 }
